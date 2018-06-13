@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical">
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#37AEE4"
+            android:layout_margin="3dp"
+            >
+            <TextView
+                android:id="@+id/restaurant_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Restaurant Name"
+                android:textColor="#000000"
+                android:textSize="25dp"/>
+            <TextView
+                android:id="@+id/localization"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/restaurant_name"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@+id/tags"
+                android:text="City, Street"
+                android:textSize="15dp"/>
+            <TextView
+                android:id="@id/tags"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/restaurant_name"
+                android:layout_alignParentRight="true"
+                android:text="Pizza, Kebab"
+                android:textSize="15dp"/>
+        </RelativeLayout>
+    </FrameLayout>
+</android.support.constraint.ConstraintLayout>
+
