@@ -87,6 +87,7 @@ public class RestaurantListActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             if(problemWithNet)
                 Toast.makeText(getApplicationContext(), "problem with net", Toast.LENGTH_SHORT);
+            rl.clear();
             rl.addAll(list);
             adapter.notifyDataSetChanged();
         }

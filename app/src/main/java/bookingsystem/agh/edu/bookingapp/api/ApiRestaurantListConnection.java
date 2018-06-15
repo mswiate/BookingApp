@@ -30,28 +30,11 @@ public class ApiRestaurantListConnection {
 
             if(res.first != 200)
                 return null;
-            JSONArray rl = null;
-
-            if(res.second == null)
-                res= new Pair<>(200,  new JSONObject("{\"restaurants\":[\n" +
-                        "  {\n" +
-                        "    \"id\": 2,\n" +
-                        "    \"name\": \"name\",\n" +
-                        "    \"city\": \"city\",\n" +
-                        "    \"street\": \"street\",\n" +
-                        "    \"phoneNumber\": \"\",\n" +
-                        "    \"tags\": [\n" +
-                        "      \"KEBAB\",\n" +
-                        "      \"PIZZA\"\n" +
-                        "    ]\n" +
-                        "  }\n" +
-                        "]}"));
-
-            rl = res.second.getJSONArray("restaurants");
+            JSONArray rl = res.second.getJSONArray("restaurants");
 
             List<Restaurant> restaurants = new ArrayList<>();
             for(int i = 0; i < rl.length(); i++) {
-                restaurants.add(Restaurant.of(rl.getJSONObject(i)));
+                restaurants.add(Restaurant.of(new JSONObject(rl.getString(i))));
             }
             return restaurants;
         } catch (JSONException e) {
