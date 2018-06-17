@@ -24,7 +24,8 @@ public class ApiRestaurantListConnection {
 
     public List<Restaurant> getRestaurants() throws IOException {
         try {
-            Pair<Integer, JSONObject> res = new ApiConnection(mContext).authGet(ApiEndpoints.GET_RESTAURANT_LIST, null);
+            Pair<Integer, JSONObject> res = new ApiConnection(mContext)
+                    .authGet(ApiEndpoints.GET_RESTAURANT_LIST, null);
             if(res == null)
                 return null;
 
