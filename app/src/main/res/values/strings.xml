@@ -13,4 +13,8 @@
     <string name="account_type">bookingsystem.agh.edu.bookingapp</string>
     <string name="title_activity_restaurant_list">RestaurantListActivity</string>
     <string name="element_text">Element</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_overview">OverviewActivity</string>
+    <string name="nav_menu_open">Open</string>
+    <string name="nav_menu_close">Close</string>
 </resources>
