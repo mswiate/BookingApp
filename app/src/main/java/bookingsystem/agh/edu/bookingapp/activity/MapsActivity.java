@@ -14,6 +14,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import bookingsystem.agh.edu.bookingapp.R;
+import bookingsystem.agh.edu.bookingapp.task.GetRestaurantMarkersTask;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -55,6 +56,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        this.mMap = googleMap;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             if(ActivityCompat.checkSelfPermission
                     (this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -66,46 +68,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.ACCESS_FINE_LOCATION
                 }, 1);
-                //return;
             }
             else{
 
                 googleMap.setMyLocationEnabled(true);
-//                Location location;
-//                LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-//                if (locationManager == null) {
-//                    return;
-//                }
-//                location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-//                LatLng latLng = new LatLng(location.getLatitude(),
-//                        location.getLongitude());
-//                googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-//
-//                googleMap.addMarker(new MarkerOptions().position(latLng).title("I am here"));
-//
-//                // For zooming automatically to the location of the marker
-//                googleMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
-//                googleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
+                new GetRestaurantMarkersTask(mMap).execute();
             }
         }
     }
-
-// @Override
-//public void onRequestPermissionsResult(int requestCode,
-//                                       @NonNull String permissions[],
-//                                       @NonNull int[] grantResults) {
-//    mLocationPermissionGranted = false;
-//    switch (requestCode) {
-//        case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
-//            // If request is cancelled, the result arrays are empty.
-//            if (grantResults.length > 0
-//                    && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-//                mLocationPermissionGranted = true;
-//            }
-//        }
-//    }
-//    updateLocationUI();
-//}
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
