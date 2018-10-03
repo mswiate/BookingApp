@@ -93,7 +93,8 @@
                 android:layout_width="160dp"
                 android:layout_height="190dp"
                 android:layout_margin="10dp"
-                android:focusable="true">
+                android:focusable="true"
+                android:id="@+id/showMRestaurantListButton">
 
                 <LinearLayout
                     android:layout_width="match_parent"
