@@ -1,5 +1,6 @@
 package bookingsystem.agh.edu.bookingapp.activity;
 
+import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -44,6 +45,15 @@ public class ReservationHoursActivity extends AppCompatActivity {
         Intent intent = getIntent();
         Integer restaurantId = intent.getIntExtra("id", -1);
         new GetProposalHourTask(data, mAdapter, getApplicationContext()).execute(restaurantId);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AccountManager am = AccountManager.get(this);
+        if(am.getAccountsByType(getString(R.string.account_type)).length == 0) {
+            startActivity(new Intent(this, LoginActivity.class));
+        }
     }
 
     public class GetProposalHourTask extends AsyncTask<Integer, Void, Void> {

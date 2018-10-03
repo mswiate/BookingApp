@@ -1,5 +1,6 @@
 package bookingsystem.agh.edu.bookingapp.activity;
 
+import android.accounts.AccountManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -30,5 +31,14 @@ public class OverviewActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AccountManager am = AccountManager.get(this);
+        if(am.getAccountsByType(getString(R.string.account_type)).length == 0) {
+            startActivity(new Intent(this, LoginActivity.class));
+        }
     }
 }

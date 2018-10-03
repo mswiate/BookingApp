@@ -1,6 +1,8 @@
 package bookingsystem.agh.edu.bookingapp.activity;
 
 import android.Manifest;
+import android.accounts.AccountManager;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
@@ -33,6 +35,14 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         prepareNavigationMenu();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        AccountManager am = AccountManager.get(this);
+        if(am.getAccountsByType(getString(R.string.account_type)).length == 0) {
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+    }
 
     private void prepareNavigationMenu(){
         mDrawerLayour = findViewById(R.id.drawerLayour);

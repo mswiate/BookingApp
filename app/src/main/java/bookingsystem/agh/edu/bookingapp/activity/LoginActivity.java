@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
+                    sign(true);
                     return true;
                 }
                 return false;
@@ -65,10 +65,17 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         Button mSignInButton = (Button) findViewById(R.id.sign_in_button);
+        Button mSignUpButton = (Button) findViewById(R.id.sign_up_button);
         mSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
-                attemptLogin();
+                sign(true);
+            }
+        });
+        mSignUpButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                sign(false);
             }
         });
 
@@ -87,12 +94,13 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(a);
     }
 
+
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
      * errors are presented and no actual login attempt is made.
      */
-    private void attemptLogin() {
+    private void sign(boolean signIn) {
         if (mAuthTask != null) {
             return;
         }
@@ -134,7 +142,7 @@ public class LoginActivity extends AppCompatActivity {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(username, password, getApplicationContext());
+            mAuthTask = new UserLoginTask(username, password, signIn, getApplicationContext());
             mAuthTask.execute((Void) null);
         }
     }
@@ -192,12 +200,14 @@ public class LoginActivity extends AppCompatActivity {
         private final String mUsername;
         private final String mPassword;
         private Context mContext;
+        private boolean mSignIn;
         private boolean connProblem = false;
 
-        UserLoginTask(String username, String password, Context context) {
+        UserLoginTask(String username, String password, boolean signIn, Context context) {
             mUsername = username;
             mPassword = password;
             mContext = context;
+            mSignIn = signIn;
         }
 
         @Override
@@ -206,8 +216,10 @@ public class LoginActivity extends AppCompatActivity {
                 ApiAuthConnection conn = new ApiAuthConnection(mContext);
                 String token = conn.getToken(mUsername, mPassword);
 
-                if(token == null && conn.register(mUsername, mPassword))
-                    token = conn.getToken(mUsername, mPassword);
+                if(!mSignIn) {
+                    if (token == null && conn.register(mUsername, mPassword))
+                        token = conn.getToken(mUsername, mPassword);
+                }
 
                 if(token == null)
                     return false;
@@ -231,7 +243,10 @@ public class LoginActivity extends AppCompatActivity {
             } else if(connProblem) {
                 Toast.makeText(getApplicationContext(), "problem with internet connection", Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(getApplicationContext(), "failed login attempt", Toast.LENGTH_SHORT).show();
+                if(mSignIn)
+                    Toast.makeText(getApplicationContext(), "Incorrect user or password", Toast.LENGTH_SHORT).show();
+                else
+                    Toast.makeText(getApplicationContext(), "Cannot create account", Toast.LENGTH_SHORT).show();
                 mUsernameView.requestFocus();
             }
         }
