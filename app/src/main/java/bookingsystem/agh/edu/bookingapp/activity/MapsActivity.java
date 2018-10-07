@@ -5,17 +5,21 @@ import android.accounts.AccountManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.Marker;
+
 import bookingsystem.agh.edu.bookingapp.R;
+import bookingsystem.agh.edu.bookingapp.adapter.googlemaps.RestaurantInfoWindowGoogleMap;
 import bookingsystem.agh.edu.bookingapp.task.GetRestaurantMarkersTask;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -85,6 +89,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 new GetRestaurantMarkersTask(mMap).execute();
             }
         }
+        RestaurantInfoWindowGoogleMap restaurantInfoWindow = new RestaurantInfoWindowGoogleMap(this);
+        googleMap.setInfoWindowAdapter(restaurantInfoWindow);
+
+        googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Toast.makeText(MapsActivity.this, "dadada", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Intent intent = new Intent(MapsActivity.this, ReservationActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override

@@ -17,5 +17,6 @@
     <string name="title_activity_overview">OverviewActivity</string>
     <string name="nav_menu_open">Open</string>
     <string name="nav_menu_close">Close</string>
+    <string name="title_activity_reservation">ReservationActivity</string>
     <string name="action_sign_up">sign up</string>
 </resources>
