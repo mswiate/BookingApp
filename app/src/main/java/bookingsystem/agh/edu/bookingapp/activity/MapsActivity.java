@@ -4,19 +4,30 @@ import android.Manifest;
 import android.accounts.AccountManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 
 import bookingsystem.agh.edu.bookingapp.R;
 import bookingsystem.agh.edu.bookingapp.adapter.googlemaps.RestaurantInfoWindowGoogleMap;
@@ -27,16 +38,21 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
     private DrawerLayout mDrawerLayour;
     private ActionBarDrawerToggle mToggle;
+    private FusedLocationProviderClient mFusedLocationProviderClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mFusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+
         setContentView(R.layout.activity_maps);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         prepareNavigationMenu();
+
     }
 
     @Override
@@ -83,12 +99,12 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                         Manifest.permission.ACCESS_FINE_LOCATION
                 }, 1);
             }
-            else{
-
-                googleMap.setMyLocationEnabled(true);
-                new GetRestaurantMarkersTask(mMap).execute();
-            }
         }
+        focusMapOnCurrentLocation();
+
+        // Get the current location of the device and set the position of the map.
+        new GetRestaurantMarkersTask(mMap).execute();
+
         RestaurantInfoWindowGoogleMap restaurantInfoWindow = new RestaurantInfoWindowGoogleMap(this);
         googleMap.setInfoWindowAdapter(restaurantInfoWindow);
 
@@ -107,6 +123,38 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
+    }
+
+    private void focusMapOnCurrentLocation() {
+        if (mMap == null) {
+            return;
+        }
+        try {
+            if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                    android.Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                mFusedLocationProviderClient.getLastLocation().
+                        addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                            @Override
+                            public void onSuccess(Location location) {
+                                if (location == null) {
+                                    mMap.setMyLocationEnabled(false);
+                                    return;
+                                }
+                                mMap.setMyLocationEnabled(true);
+                                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                                        new LatLng(location.getLatitude(), location.getLongitude()),
+                                        15)
+                                );
+                            }
+                        });
+
+            } else {
+                mMap.setMyLocationEnabled(false);
+            }
+        } catch (SecurityException e)  {
+            Log.e("Exception: %s", e.getMessage());
+        }
     }
 
     @Override
