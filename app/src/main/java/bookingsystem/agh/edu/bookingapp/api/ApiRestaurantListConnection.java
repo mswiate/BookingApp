@@ -1,8 +1,11 @@
 package bookingsystem.agh.edu.bookingapp.api;
 
 import android.content.Context;
+import android.location.Location;
 import android.util.Log;
 import android.util.Pair;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,10 +25,13 @@ public class ApiRestaurantListConnection {
         this.mContext = mContext;
     }
 
-    public List<Restaurant> getRestaurants() throws IOException {
+    public List<Restaurant> getRestaurants(LatLng location, double radius, List<String> tags) throws IOException {
         try {
+
+            String endpoint = buildRequest(ApiEndpoints.GET_RESTAURANT_LIST, location, radius, tags);
+
             Pair<Integer, JSONObject> res = new ApiConnection(mContext)
-                    .authGet(ApiEndpoints.GET_RESTAURANT_LIST, null);
+                    .authGet(endpoint, null);
             if(res == null)
                 return null;
 
@@ -43,6 +49,19 @@ public class ApiRestaurantListConnection {
             return null;
         }
 
+    }
+
+    private String buildRequest(String getRestaurantList, LatLng location, double radius, List<String> tags) {
+        String request = getRestaurantList + "?" +
+                "lat=" + location.latitude +
+                "&lon=" + location.longitude +
+                "&radius=" + new Double(radius).intValue();
+        if(tags == null)
+            return request;
+        for (String tag: tags) {
+            request += "&tags=" + tag;
+        }
+        return request;
     }
 
 }

@@ -33,7 +33,7 @@ import bookingsystem.agh.edu.bookingapp.R;
 import bookingsystem.agh.edu.bookingapp.adapter.googlemaps.RestaurantInfoWindowGoogleMap;
 import bookingsystem.agh.edu.bookingapp.task.GetRestaurantMarkersTask;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener {
 
     private GoogleMap mMap;
     private DrawerLayout mDrawerLayour;
@@ -102,11 +102,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         focusMapOnCurrentLocation();
 
-        // Get the current location of the device and set the position of the map.
-        new GetRestaurantMarkersTask(mMap).execute();
-
         RestaurantInfoWindowGoogleMap restaurantInfoWindow = new RestaurantInfoWindowGoogleMap(this);
         googleMap.setInfoWindowAdapter(restaurantInfoWindow);
+        mMap.setOnCameraIdleListener(this);
 
         googleMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
@@ -143,18 +141,24 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 }
                                 mMap.setMyLocationEnabled(true);
                                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                                        new LatLng(location.getLatitude(), location.getLongitude()),
-                                        15)
-                                );
+                                        new LatLng(location.getLatitude(), location.getLongitude()),15));
                             }
                         });
 
             } else {
                 mMap.setMyLocationEnabled(false);
             }
+
         } catch (SecurityException e)  {
             Log.e("Exception: %s", e.getMessage());
         }
+    }
+
+    private void markRestaurants() {
+        Log.e("llama", "");
+        Log.e("lat %s", mMap.getCameraPosition().target.latitude +"");
+        Log.e("lat %s", mMap.getCameraPosition().target.longitude+"");
+       // new GetRestaurantMarkersTask(getApplicationContext(), mMap.getCameraPosition(), mMap.getProjection().getVisibleRegion()).execute();
     }
 
     @Override
@@ -165,4 +169,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    public void onCameraIdle() {
+        markRestaurants();
+    }
 }

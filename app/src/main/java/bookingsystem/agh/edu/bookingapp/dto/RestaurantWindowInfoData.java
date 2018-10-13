@@ -4,6 +4,10 @@ public class RestaurantWindowInfoData {
 
     private int restaurantId;
 
+    public RestaurantWindowInfoData(int restaurantId) {
+        this.restaurantId = restaurantId;
+    }
+
     public int getRestaurantId() {
         return restaurantId;
     }

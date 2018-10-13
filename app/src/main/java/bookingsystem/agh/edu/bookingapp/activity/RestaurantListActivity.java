@@ -78,7 +78,7 @@ public class RestaurantListActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             try {
-                list = new ApiRestaurantListConnection(mContext).getRestaurants();
+                list = new ApiRestaurantListConnection(mContext).getRestaurants(null, 0d, null);
             } catch (IOException e) {
                 problemWithNet = true;
                 list = new ArrayList<>();
