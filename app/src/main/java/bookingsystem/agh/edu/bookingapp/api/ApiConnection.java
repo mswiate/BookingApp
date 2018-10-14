@@ -69,7 +69,7 @@ public class ApiConnection {
     }
 
     private Pair<Integer, JSONObject> doRequest(String method, String endpoint, JSONObject body, List<Pair<String, String>> headers) throws IOException {
-        HttpsURLConnection conn = openJSONConnection(endpoint);
+        HttpsURLConnection conn = openJSONConnection(endpoint, headers);
         conn.setRequestMethod(method);
         if(body != null) {
             conn.setDoOutput(true);
@@ -92,7 +92,7 @@ public class ApiConnection {
         }
     }
 
-    private HttpsURLConnection openJSONConnection(String url, Pair<String, String>... headers) throws IOException {
+    private HttpsURLConnection openJSONConnection(String url, List<Pair<String, String>> headers) throws IOException {
         HttpsURLConnection conn = (HttpsURLConnection) new URL(url).openConnection();
         conn.setRequestProperty("Content-Type", "application/json");
         conn.setRequestProperty("charset", "utf-8");

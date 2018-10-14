@@ -155,10 +155,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void markRestaurants() {
-        Log.e("llama", "");
-        Log.e("lat %s", mMap.getCameraPosition().target.latitude +"");
-        Log.e("lat %s", mMap.getCameraPosition().target.longitude+"");
-       // new GetRestaurantMarkersTask(getApplicationContext(), mMap.getCameraPosition(), mMap.getProjection().getVisibleRegion()).execute();
+        new GetRestaurantMarkersTask(getApplicationContext(), mMap, mMap.getCameraPosition(), mMap.getProjection().getVisibleRegion()).execute();
     }
 
     @Override

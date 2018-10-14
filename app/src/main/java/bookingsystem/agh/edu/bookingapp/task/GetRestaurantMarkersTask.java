@@ -30,10 +30,11 @@ public class GetRestaurantMarkersTask  extends AsyncTask<Void, Void, List<Restau
     private GoogleMap googleMap;
     private boolean problemWithNet;
 
-    public GetRestaurantMarkersTask(Context context, CameraPosition cameraPosition, VisibleRegion visibleRegion) {
+    public GetRestaurantMarkersTask(Context context, GoogleMap googleMap, CameraPosition cameraPosition, VisibleRegion visibleRegion) {
         this.mContext = context;
         this.cameraPosition = cameraPosition;
         this.visibleRegion = visibleRegion;
+        this.googleMap = googleMap;
     }
 
     @Override
