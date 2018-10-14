@@ -35,6 +35,7 @@ import bookingsystem.agh.edu.bookingapp.task.GetRestaurantMarkersTask;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener {
 
+    private final LatLng CRACOW_TOWN_SQUARE_LAT_LNG = new LatLng(50.0618971, 19.9345672);
     private GoogleMap mMap;
     private DrawerLayout mDrawerLayour;
     private ActionBarDrawerToggle mToggle;
@@ -137,15 +138,19 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                             public void onSuccess(Location location) {
                                 if (location == null) {
                                     mMap.setMyLocationEnabled(false);
+                                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                                            CRACOW_TOWN_SQUARE_LAT_LNG,15));
                                     return;
                                 }
                                 mMap.setMyLocationEnabled(true);
                                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                                        new LatLng(location.getLatitude(), location.getLongitude()),15));
+                                        new LatLng(location.getLatitude(), location.getLongitude()),13));
                             }
                         });
 
             } else {
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                        CRACOW_TOWN_SQUARE_LAT_LNG,13));
                 mMap.setMyLocationEnabled(false);
             }
 

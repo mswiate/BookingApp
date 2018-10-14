@@ -46,7 +46,7 @@ public class GetRestaurantMarkersTask  extends AsyncTask<Void, Void, List<Restau
             List<Restaurant> restaurants = new ApiRestaurantListConnection(mContext)
                     .getRestaurants(location, radius, null);
 
-            return restaurants;
+            return restaurants == null ? new ArrayList<Restaurant>(): restaurants;
         } catch (IOException e) {
             problemWithNet = true;
             return new ArrayList<>();
