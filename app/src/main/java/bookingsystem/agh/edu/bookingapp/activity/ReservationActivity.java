@@ -10,19 +10,31 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
+
+import com.shawnlin.numberpicker.NumberPicker;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
 import bookingsystem.agh.edu.bookingapp.R;
+import bookingsystem.agh.edu.bookingapp.dto.ProposedHoursAskDto;
+import bookingsystem.agh.edu.bookingapp.service.ReservationService;
+import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 
 public class ReservationActivity extends AppCompatActivity {
 
+    private int restaurantId;
+    private CircularProgressButton submitButton;
+
+
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        this.restaurantId = this.getIntent().getIntExtra("restaurantId", -1);
         setContentView(R.layout.activity_reservation);
+        this.submitButton = findViewById(R.id.info_window_submit_button);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setDatePicker();
@@ -31,6 +43,32 @@ public class ReservationActivity extends AppCompatActivity {
 
         setTimePicker((Button) findViewById(R.id.info_window_set_from_time_button),
                 (TextView) findViewById(R.id.info_window_set_from_time_textview));
+
+
+        this.submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                try {
+                    submitButton.startAnimation();
+                    final ProposedHoursAskDto proposedHoursAskDto = fetchDataFromActivity();
+                    new ReservationService(proposedHoursAskDto,ReservationActivity.this).submit();
+                } catch (Exception e) {
+                    Toast.makeText(ReservationActivity.this, "Oops, some internal error occurred:" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    submitButton.revertAnimation();
+                }
+            }
+        });
+    }
+
+
+    private ProposedHoursAskDto fetchDataFromActivity() {
+        String date = ((TextView)findViewById(R.id.info_window_set_date_textview)).getText().toString();
+        String fromTime = ((TextView)findViewById(R.id.info_window_set_from_time_textview)).getText().toString();
+        String toTime = ((TextView)findViewById(R.id.info_window_set_to_time_textview)).getText().toString();
+        Integer numberOfGuests = ((NumberPicker)findViewById(R.id.guest_number_picker)).getValue();
+
+        return new ProposedHoursAskDto(restaurantId, numberOfGuests, date, fromTime, toTime);
     }
 
     private void setTimePicker(Button button, final TextView textView) {
@@ -86,18 +124,20 @@ public class ReservationActivity extends AppCompatActivity {
 
     }
     private void updateDateLabel(TextView textView, Calendar calendar){
-        String myFormat = "MM/dd/yy";
+        String myFormat = "yyyy-MM-dd";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.getDefault());
-
         textView.setText(sdf.format(calendar.getTime()));
     }
 
     private void updateTimeLabel(TextView textView, Calendar calendar) {
         String myFormat = "HH:mm";
         SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.getDefault());
-
         textView.setText(sdf.format(calendar.getTime()));
 
+    }
+
+    public void stopSubmitButtonAnimation(){
+        this.submitButton.revertAnimation();
     }
 
 }

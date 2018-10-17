@@ -194,7 +194,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <com.shawnlin.numberpicker.NumberPicker
-                        android:id="@+id/number_picker"
+                        android:id="@+id/guest_number_picker"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -217,14 +217,20 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:gravity="">
+                    android:gravity="center"
+                    android:paddingTop="10dp">
 
-                    <Button
+                    <br.com.simplepass.loading_button_lib.customViews.CircularProgressButton
                         android:id="@+id/info_window_submit_button"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="0.4"
-                        android:text="Submit" />
+                        android:gravity="center"
+                        android:textColor="@android:color/white"
+                        android:text="Submit"
+                        android:background="@drawable/shape_default"
+                        app:spinning_bar_padding="6dp"
+                        app:spinning_bar_width="6dp"
+                        app:spinning_bar_color="#fff"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

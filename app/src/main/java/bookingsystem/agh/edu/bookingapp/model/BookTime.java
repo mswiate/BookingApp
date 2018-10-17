@@ -4,7 +4,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,6 +20,9 @@ public class BookTime {
 
     public static List<BookTime> of(JSONObject json) throws JSONException {
         JSONArray jsonArray = json.getJSONArray("proposalHours");
+        if(jsonArray == null){
+            return null;
+        }
         List<BookTime> bookTimes = new ArrayList<>();
         for(int i = 0; i < jsonArray.length(); ++i){
             String time = jsonArray.getString(i);

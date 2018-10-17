@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -25,12 +24,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 
 import bookingsystem.agh.edu.bookingapp.R;
 import bookingsystem.agh.edu.bookingapp.adapter.googlemaps.RestaurantInfoWindowGoogleMap;
+import bookingsystem.agh.edu.bookingapp.dto.RestaurantWindowInfoData;
 import bookingsystem.agh.edu.bookingapp.task.GetRestaurantMarkersTask;
 
 public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener {
@@ -118,6 +116,8 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onInfoWindowClick(Marker marker) {
                 Intent intent = new Intent(MapsActivity.this, ReservationActivity.class);
+                int restaurantId = ((RestaurantWindowInfoData) marker.getTag()).getRestaurantId();
+                intent.putExtra("restaurantId", restaurantId);
                 startActivity(intent);
             }
         });
