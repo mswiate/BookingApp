@@ -3,13 +3,10 @@ package bookingsystem.agh.edu.bookingapp.activity;
 import android.accounts.AccountManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 
 import bookingsystem.agh.edu.bookingapp.R;
 
@@ -36,6 +33,15 @@ public class OverviewActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), RestaurantListActivity.class);
+                view.getContext().startActivity(intent);
+            }
+        });
+
+        CardView showMyReservations = findViewById(R.id.show_my_reservations);
+        showMyReservations.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), MyReservationsActivity.class);
                 view.getContext().startActivity(intent);
             }
         });
