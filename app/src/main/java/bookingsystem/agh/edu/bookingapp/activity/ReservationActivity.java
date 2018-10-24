@@ -14,12 +14,15 @@ import android.widget.Toast;
 
 import com.shawnlin.numberpicker.NumberPicker;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 import bookingsystem.agh.edu.bookingapp.R;
 import bookingsystem.agh.edu.bookingapp.dto.ProposedHoursAskDto;
+import bookingsystem.agh.edu.bookingapp.exception.BadReservationRequestDataException;
 import bookingsystem.agh.edu.bookingapp.service.ReservationService;
 import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 
@@ -52,8 +55,14 @@ public class ReservationActivity extends AppCompatActivity {
                 try {
                     submitButton.startAnimation();
                     final ProposedHoursAskDto proposedHoursAskDto = fetchDataFromActivity();
+                    validateFormData(proposedHoursAskDto);
                     new ReservationService(proposedHoursAskDto,ReservationActivity.this).submit();
-                } catch (Exception e) {
+                }
+                catch (BadReservationRequestDataException e){
+                    Toast.makeText(ReservationActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    submitButton.revertAnimation();
+                }
+                catch (Exception e) {
                     Toast.makeText(ReservationActivity.this, "Oops, some internal error occurred:" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     submitButton.revertAnimation();
                 }
@@ -62,7 +71,38 @@ public class ReservationActivity extends AppCompatActivity {
     }
 
 
-    private ProposedHoursAskDto fetchDataFromActivity() {
+    private void validateFormData(ProposedHoursAskDto data) throws ParseException, BadReservationRequestDataException {
+        validateDate(data.getDate());
+        validateTime(data.getFromTime(), data.getToTime());
+        validateReservationLength(data.getLength());
+    }
+
+    private void validateReservationLength(int length) throws BadReservationRequestDataException {
+        if(length < 30){
+            throw new BadReservationRequestDataException("Reservation period is too short. (30min at least)");
+        }
+    }
+
+    private void validateTime(String fromTime, String toTime) throws ParseException, BadReservationRequestDataException {
+        String timeFormat = "HH:mm";
+        SimpleDateFormat sdf = new SimpleDateFormat(timeFormat, Locale.getDefault());
+        Date parsedFromTime = sdf.parse(fromTime);
+        Date parsedToTime = sdf.parse(toTime);
+        if(parsedFromTime.getTime() >= parsedToTime.getTime()){
+            throw new BadReservationRequestDataException("From time cannot be later than to time");
+        }
+    }
+
+    private void validateDate(String date) throws ParseException, BadReservationRequestDataException {
+        String dateFormat = "yyyy-MM-dd";
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.getDefault());
+        Date parsedDate = sdf.parse(date);
+        if(parsedDate.getTime() < Calendar.getInstance().getTime().getTime()){
+            throw new BadReservationRequestDataException("Invalid date value");
+        }
+    }
+
+    private ProposedHoursAskDto fetchDataFromActivity() throws ParseException {
         String date = ((TextView)findViewById(R.id.info_window_set_date_textview)).getText().toString();
         String fromTime = ((TextView)findViewById(R.id.info_window_set_from_time_textview)).getText().toString();
         String toTime = ((TextView)findViewById(R.id.info_window_set_to_time_textview)).getText().toString();

@@ -28,7 +28,7 @@ public class GetProposalBookingHoursTask extends AsyncTask<Void, Void, List<Book
     protected List<BookTime> doInBackground(Void... values) {
 
         List<BookTime> list = new ApiProposalHours(mContext, proposedHoursAskDto.getRestaurantId(), proposedHoursAskDto.getDate(),
-                proposedHoursAskDto.getFromTime(), 60, proposedHoursAskDto.getNubmerOfGuests())
+                proposedHoursAskDto.getFromTime(), proposedHoursAskDto.getLength(), proposedHoursAskDto.getNubmerOfGuests())
                 .getProposalBookingHours();
         if(problemWithNet){
             problemWithNet = true;
