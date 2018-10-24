@@ -14,7 +14,7 @@
     <color name="status_cancelled">#7f0000</color>
     <color name="status_booked">#003300</color>
     <color name="status_finished">#1b1b1b</color>
-    <color name="backgroud_status_cancelled">#f05545</color>
-    <color name="backgroud_status_booked">#aee571</color>
-    <color name="backgroud_status_finished">#6d6d6d</color>
+    <color name="backgroud_status_cancelled">#ef9a9a</color>
+    <color name="backgroud_status_booked">#a5d6a7</color>
+    <color name="backgroud_status_finished">#cfd8dc</color>
 </resources>

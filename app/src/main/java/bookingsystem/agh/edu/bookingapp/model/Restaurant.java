@@ -4,14 +4,16 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Restaurant {
+public class Restaurant implements Serializable{
     private int id;
     private String name;
     private String city;
     private String street;
+    private String website;
     private String phoneNumber;
     private List<String> tags;
     private double latitude;
@@ -25,16 +27,23 @@ public class Restaurant {
         List<String> tags = new ArrayList<>();
         for(int i = 0; i < jsonTags.length(); ++i)
             tags.add(jsonTags.getString(i));
-        return new Restaurant(json.getInt("id"), json.getString("name"), json.getString("city"),
-                json.getString("street"), json.getString("phoneNumber"),
-                tags, json.getDouble("latitude"), json.getDouble("longitude"));
+        return new Restaurant(json.getInt("id"),
+                json.getString("name"),
+                json.getString("city"),
+                json.getString("street"),
+                json.getString("website"),
+                json.getString("phoneNumber"),
+                tags,
+                json.getDouble("latitude"),
+                json.getDouble("longitude"));
     }
 
-    public Restaurant(int id, String name, String city, String street, String phoneNumber, List<String> tags, double latitude, double longitude) {
+    public Restaurant(int id, String name, String city, String street, String website, String phoneNumber, List<String> tags, double latitude, double longitude) {
         this.id = id;
         this.name = name;
         this.city = city;
         this.street = street;
+        this.website = website;
         this.phoneNumber = phoneNumber;
         this.tags = tags;
         this.latitude = latitude;
@@ -63,6 +72,10 @@ public class Restaurant {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getWebsite() {
+        return website;
     }
 
     public String getStreet() {

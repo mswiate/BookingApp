@@ -4,15 +4,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class DoneReservation {
+public class DoneReservation implements Serializable {
     private int id;
     private int reservedPlaces;
     private int reservationLength;
@@ -88,5 +90,29 @@ public class DoneReservation {
 
     public Restaurant getRestaurant() {
         return restaurant;
+    }
+
+    public boolean isReservationOutdated(){
+        return this.getDateReservation().getTime() < Calendar.getInstance().getTime().getTime();
+    }
+
+    public String getFormatedTime(){
+        final long ONE_MINUTE_IN_MILLIS=60000;
+        Date date = this.getDateReservation();
+
+        long t = date.getTime();
+        Date toTimeDate = new Date(t + (ONE_MINUTE_IN_MILLIS * this.getReservationLength()));
+        String timeFormat = "HH:mm";
+        SimpleDateFormat sdf = new SimpleDateFormat(timeFormat, Locale.getDefault());
+        String fromTimeText = sdf.format(date);
+        String toTimeText = sdf.format(toTimeDate);
+
+        return fromTimeText + " - " + toTimeText;
+    }
+
+    public String getFormatedDate(){
+        String dateFormat = "yyyy-MM-dd";
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.getDefault());
+        return sdf.format(this.getDateReservation());
     }
 }

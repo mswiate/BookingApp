@@ -80,4 +80,8 @@ public class ReservationCardView extends CardView {
     }
 
 
+    @Override
+    public void setOnClickListener(@Nullable OnClickListener l) {
+        this.cardView.setOnClickListener(l);
+    }
 }

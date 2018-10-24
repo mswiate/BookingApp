@@ -22,7 +22,7 @@ public class MyReservationDrawer {
         if(doneReservation.isCancelled()){
             return drawCancelledReservationCardView(doneReservation);
         }
-        if(doneReservation.getDateReservation().getTime() < Calendar.getInstance().getTime().getTime()){
+        if(doneReservation.isReservationOutdated()){
             return drawFinishedReservationCardView(doneReservation);
         }
         return drawBookedReservationCardView(doneReservation);
@@ -58,25 +58,9 @@ public class MyReservationDrawer {
     }
 
     private void setTimeAndDate(ReservationCardView reservationCardView, DoneReservation doneReservation) {
-        final long ONE_MINUTE_IN_MILLIS=60000;
 
-        Date date = doneReservation.getDateReservation();
-
-        long t = date.getTime();
-        Date toTimeDate = new Date(t + (ONE_MINUTE_IN_MILLIS * doneReservation.getReservationLength()));
-        String timeFormat = "HH:mm";
-        String dateFormat = "yyyy-MM-dd";
-        SimpleDateFormat sdf = new SimpleDateFormat(timeFormat, Locale.getDefault());
-        String fromTimeText = sdf.format(date);
-        String toTimeText = sdf.format(toTimeDate);
-
-        String timeText = fromTimeText + " - " + toTimeText;
-
-        sdf = new SimpleDateFormat(dateFormat, Locale.getDefault());
-        String dateText = sdf.format(date);
-
-        reservationCardView.setDate(dateText);
-        reservationCardView.setTime(timeText);
+        reservationCardView.setDate(doneReservation.getFormatedDate());
+        reservationCardView.setTime(doneReservation.getFormatedTime());
 
     }
 }
