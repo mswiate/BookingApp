@@ -1,5 +1,6 @@
 package bookingsystem.agh.edu.bookingapp.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,5 +18,13 @@ public class MyReservationsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         new GetMyReservationTask(MyReservationsActivity.this).execute();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        boolean authenticated = new ActivityAuthenticator(getApplicationContext()).authenticate();
+        if(!authenticated)
+            startActivity(new Intent(this, LoginActivity.class));
     }
 }

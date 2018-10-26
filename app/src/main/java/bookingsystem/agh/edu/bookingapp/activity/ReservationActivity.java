@@ -2,6 +2,7 @@ package bookingsystem.agh.edu.bookingapp.activity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -68,6 +69,14 @@ public class ReservationActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        boolean authenticated = new ActivityAuthenticator(getApplicationContext()).authenticate();
+        if(!authenticated)
+            startActivity(new Intent(this, LoginActivity.class));
     }
 
 

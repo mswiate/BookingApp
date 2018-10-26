@@ -20,19 +20,17 @@ public class ActivityAuthenticator {
         this.mContext = mContext;
     }
 
-    public void authenticate() {
+    public boolean authenticate() {
         AccountManager am = AccountManager.get(mContext);
         if(am.getAccountsByType(mContext.getString(R.string.account_type)).length == 0) {
-            mContext.startActivity(new Intent(mContext, LoginActivity.class));
+            return false;
         }
         try {
-            if(new ValidateTask(mContext).execute().get())
-                return;
-            else
-                mContext.startActivity(new Intent(mContext, LoginActivity.class));
+            return new ValidateTask(mContext).execute().get();
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     public class ValidateTask extends AsyncTask<Void, Void, Boolean> {

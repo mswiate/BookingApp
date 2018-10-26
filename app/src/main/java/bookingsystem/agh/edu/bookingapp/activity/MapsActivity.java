@@ -56,9 +56,10 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onResume() {
         super.onResume();
-        new ActivityAuthenticator(getApplicationContext()).authenticate();
+        boolean authenticated = new ActivityAuthenticator(getApplicationContext()).authenticate();
+        if(!authenticated)
+            startActivity(new Intent(this, LoginActivity.class));
     }
-
 
 
     private void prepareNavigationMenu(){

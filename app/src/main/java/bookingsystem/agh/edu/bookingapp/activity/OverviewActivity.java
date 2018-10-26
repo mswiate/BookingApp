@@ -51,9 +51,8 @@ public class OverviewActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        AccountManager am = AccountManager.get(this);
-        if(am.getAccountsByType(getString(R.string.account_type)).length == 0) {
+        boolean authenticated = new ActivityAuthenticator(getApplicationContext()).authenticate();
+        if(!authenticated)
             startActivity(new Intent(this, LoginActivity.class));
-        }
     }
 }
