@@ -71,7 +71,7 @@
         </activity>
         <activity
             android:name=".activity.ReservationActivity"
-            android:label="@string/title_activity_reservation"
+            android:label="@string/reservationActivityName"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.MyReservationsActivity"

@@ -20,6 +20,22 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_overview" />
+    <android.support.v4.widget.DrawerLayout
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:id="@+id/overviewDrawerLayout"
+        android:layout_marginTop="?attr/actionBarSize">
+
+        <include layout="@layout/content_overview" />
+
+        <android.support.design.widget.NavigationView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:menu="@menu/navigation_menu"
+            android:layout_gravity="start">
+
+        </android.support.design.widget.NavigationView>
+
+    </android.support.v4.widget.DrawerLayout>
 
 </android.support.design.widget.CoordinatorLayout>

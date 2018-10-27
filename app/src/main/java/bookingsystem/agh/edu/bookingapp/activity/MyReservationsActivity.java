@@ -8,7 +8,7 @@ import android.support.v7.widget.Toolbar;
 import bookingsystem.agh.edu.bookingapp.R;
 import bookingsystem.agh.edu.bookingapp.task.GetMyReservationTask;
 
-public class MyReservationsActivity extends AppCompatActivity {
+public class MyReservationsActivity extends ActivityWithMenu {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,6 +18,7 @@ public class MyReservationsActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         new GetMyReservationTask(MyReservationsActivity.this).execute();
+        prepareNavigationMenu(R.id.myReservationsDrawerLayout);
     }
 
     @Override

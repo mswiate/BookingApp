@@ -30,12 +30,10 @@ import bookingsystem.agh.edu.bookingapp.adapter.googlemaps.RestaurantInfoWindowG
 import bookingsystem.agh.edu.bookingapp.dto.RestaurantWindowInfoData;
 import bookingsystem.agh.edu.bookingapp.task.GetRestaurantMarkersTask;
 
-public class MapsActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener {
+public class MapsActivity extends ActivityWithMenu implements OnMapReadyCallback, GoogleMap.OnCameraIdleListener {
 
     private final LatLng CRACOW_TOWN_SQUARE_LAT_LNG = new LatLng(50.0618971, 19.9345672);
     private GoogleMap mMap;
-    private DrawerLayout mDrawerLayour;
-    private ActionBarDrawerToggle mToggle;
     private FusedLocationProviderClient mFusedLocationProviderClient;
 
     @Override
@@ -49,8 +47,7 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        prepareNavigationMenu();
-
+        prepareNavigationMenu(R.id.mapsDrawerLayout);
     }
 
     @Override
@@ -59,17 +56,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         boolean authenticated = new ActivityAuthenticator(getApplicationContext()).authenticate();
         if(!authenticated)
             startActivity(new Intent(this, LoginActivity.class));
-    }
-
-
-    private void prepareNavigationMenu(){
-        mDrawerLayour = findViewById(R.id.drawerLayour);
-        mToggle = new ActionBarDrawerToggle(this, mDrawerLayour, R.string.nav_menu_open, R.string.nav_menu_close);
-        mDrawerLayour.addDrawerListener(mToggle);
-        mToggle.syncState();
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
     }
 
 
@@ -161,15 +147,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void markRestaurants() {
         new GetRestaurantMarkersTask(getApplicationContext(), mMap, mMap.getCameraPosition(), mMap.getProjection().getVisibleRegion()).execute();
     }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        if(mToggle.onOptionsItemSelected(item)){
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
 
     @Override
     public void onCameraIdle() {

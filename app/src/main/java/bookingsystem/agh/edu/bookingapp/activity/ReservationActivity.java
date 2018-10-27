@@ -27,7 +27,7 @@ import bookingsystem.agh.edu.bookingapp.exception.BadReservationRequestDataExcep
 import bookingsystem.agh.edu.bookingapp.service.ReservationService;
 import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 
-public class ReservationActivity extends AppCompatActivity {
+public class ReservationActivity extends ActivityWithMenu {
 
     private int restaurantId;
     private CircularProgressButton submitButton;
@@ -69,6 +69,8 @@ public class ReservationActivity extends AppCompatActivity {
                 }
             }
         });
+
+        prepareNavigationMenu(R.id.reservationDrawerLayout);
     }
 
     @Override
