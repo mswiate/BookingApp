@@ -2,10 +2,11 @@ package bookingsystem.agh.edu.bookingapp.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
 import bookingsystem.agh.edu.bookingapp.R;
+import bookingsystem.agh.edu.bookingapp.activity.tools.ActivityAuthenticator;
+import bookingsystem.agh.edu.bookingapp.activity.tools.ActivityWithMenu;
 import bookingsystem.agh.edu.bookingapp.task.GetMyReservationTask;
 
 public class MyReservationsActivity extends ActivityWithMenu {
@@ -18,7 +19,7 @@ public class MyReservationsActivity extends ActivityWithMenu {
         setSupportActionBar(toolbar);
 
         new GetMyReservationTask(MyReservationsActivity.this).execute();
-        prepareNavigationMenu(R.id.myReservationsDrawerLayout);
+        prepareNavigationMenu(R.id.myReservationsDrawerLayout, R.id.my_reservations_nav_view, getApplicationContext());
     }
 
     @Override

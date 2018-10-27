@@ -8,11 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -26,6 +22,8 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import bookingsystem.agh.edu.bookingapp.R;
+import bookingsystem.agh.edu.bookingapp.activity.tools.ActivityAuthenticator;
+import bookingsystem.agh.edu.bookingapp.activity.tools.ActivityWithMenu;
 import bookingsystem.agh.edu.bookingapp.adapter.googlemaps.RestaurantInfoWindowGoogleMap;
 import bookingsystem.agh.edu.bookingapp.dto.RestaurantWindowInfoData;
 import bookingsystem.agh.edu.bookingapp.task.GetRestaurantMarkersTask;
@@ -47,7 +45,7 @@ public class MapsActivity extends ActivityWithMenu implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        prepareNavigationMenu(R.id.mapsDrawerLayout);
+        prepareNavigationMenu(R.id.mapsDrawerLayout, R.id.map_nav_view, getApplicationContext());
     }
 
     @Override

@@ -4,7 +4,6 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +21,8 @@ import java.util.Date;
 import java.util.Locale;
 
 import bookingsystem.agh.edu.bookingapp.R;
+import bookingsystem.agh.edu.bookingapp.activity.tools.ActivityAuthenticator;
+import bookingsystem.agh.edu.bookingapp.activity.tools.ActivityWithMenu;
 import bookingsystem.agh.edu.bookingapp.dto.ProposedHoursAskDto;
 import bookingsystem.agh.edu.bookingapp.exception.BadReservationRequestDataException;
 import bookingsystem.agh.edu.bookingapp.service.ReservationService;
@@ -70,7 +71,7 @@ public class ReservationActivity extends ActivityWithMenu {
             }
         });
 
-        prepareNavigationMenu(R.id.reservationDrawerLayout);
+        prepareNavigationMenu(R.id.reservationDrawerLayout, R.id.reservation_nav_view, getApplicationContext());
     }
 
     @Override

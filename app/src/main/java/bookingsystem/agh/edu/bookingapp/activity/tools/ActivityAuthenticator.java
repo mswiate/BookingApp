@@ -1,5 +1,6 @@
-package bookingsystem.agh.edu.bookingapp.activity;
+package bookingsystem.agh.edu.bookingapp.activity.tools;
 
+import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.Intent;
@@ -26,7 +27,15 @@ public class ActivityAuthenticator {
             return false;
         }
         try {
-            return new ValidateTask(mContext).execute().get();
+            boolean isValid = new ValidateTask(mContext).execute().get();
+            if(isValid)
+               return true;
+
+            Account account = am.getAccountsByType(mContext.getString(R.string.account_type))[0];
+            am.removeAccount(account, null, null);
+
+            return false;
+
         } catch (InterruptedException | ExecutionException e) {
             e.printStackTrace();
         }
