@@ -239,7 +239,9 @@ public class LoginActivity extends AppCompatActivity {
             showProgress(false);
 
             if (success) {
-                finish();
+                Intent intent = new Intent(LoginActivity.this, OverviewActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
             } else if(connProblem) {
                 Toast.makeText(getApplicationContext(), "problem with internet connection", Toast.LENGTH_SHORT).show();
             } else {

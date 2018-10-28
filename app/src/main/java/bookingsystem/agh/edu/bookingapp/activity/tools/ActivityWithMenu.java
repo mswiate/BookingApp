@@ -34,13 +34,6 @@ public class ActivityWithMenu extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.navigation_menu, menu);
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item){
         if(mToggle.onOptionsItemSelected(item)){
             return true;
