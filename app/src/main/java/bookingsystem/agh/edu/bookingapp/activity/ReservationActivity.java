@@ -77,9 +77,7 @@ public class ReservationActivity extends ActivityWithMenu {
     @Override
     protected void onResume() {
         super.onResume();
-        boolean authenticated = new ActivityAuthenticator(getApplicationContext()).authenticate();
-        if(!authenticated)
-            startActivity(new Intent(this, LoginActivity.class));
+        new ActivityAuthenticator(getApplicationContext()).execute();
     }
 
 

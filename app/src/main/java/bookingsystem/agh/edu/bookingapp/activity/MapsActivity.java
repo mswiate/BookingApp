@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -51,9 +52,7 @@ public class MapsActivity extends ActivityWithMenu implements OnMapReadyCallback
     @Override
     protected void onResume() {
         super.onResume();
-        boolean authenticated = new ActivityAuthenticator(getApplicationContext()).authenticate();
-        if(!authenticated)
-            startActivity(new Intent(this, LoginActivity.class));
+        new ActivityAuthenticator(getApplicationContext()).execute();
     }
 
 

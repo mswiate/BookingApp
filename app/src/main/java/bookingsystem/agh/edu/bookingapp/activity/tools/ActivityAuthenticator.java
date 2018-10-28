@@ -11,9 +11,10 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
 import bookingsystem.agh.edu.bookingapp.R;
+import bookingsystem.agh.edu.bookingapp.activity.LoginActivity;
 import bookingsystem.agh.edu.bookingapp.api.ApiValidate;
 
-public class ActivityAuthenticator {
+public class ActivityAuthenticator extends AsyncTask<Void, Void, Boolean> {
 
     private final Context mContext;
 
@@ -21,43 +22,31 @@ public class ActivityAuthenticator {
         this.mContext = mContext;
     }
 
-    public boolean authenticate() {
+    @Override
+    protected Boolean doInBackground(Void... voids) {
         AccountManager am = AccountManager.get(mContext);
         if(am.getAccountsByType(mContext.getString(R.string.account_type)).length == 0) {
             return false;
         }
         try {
-            boolean isValid = new ValidateTask(mContext).execute().get();
+            boolean isValid = new ApiValidate(mContext).validate();
             if(isValid)
-               return true;
+                return true;
 
             Account account = am.getAccountsByType(mContext.getString(R.string.account_type))[0];
             am.removeAccount(account, null, null);
 
-            return false;
-
-        } catch (InterruptedException | ExecutionException e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            Log.e("Authentication", "Problem with Net", e);
         }
         return false;
     }
 
-    public class ValidateTask extends AsyncTask<Void, Void, Boolean> {
-
-        private Context mContext;
-
-        public ValidateTask(Context mContext) {
-            this.mContext = mContext;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-            try {
-                return new ApiValidate(mContext).validate();
-            } catch (IOException e) {
-                Log.e("Authentication", "Problem with Net", e);
-                return false;
-            }
-        }
+    @Override
+    protected void onPostExecute(Boolean authenticated) {
+        Intent intent = new Intent(mContext, LoginActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if(!authenticated)
+            mContext.startActivity(intent);
     }
 }
