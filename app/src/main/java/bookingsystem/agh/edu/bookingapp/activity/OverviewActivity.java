@@ -29,14 +29,14 @@ public class OverviewActivity extends ActivityWithMenu {
         });
 
 
-//        CardView showRestaurantListButton = findViewById(R.id.showMRestaurantListButton);
-//        showRestaurantListButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(view.getContext(), RestaurantListActivity.class);
-//                view.getContext().startActivity(intent);
-//            }
-//        });
+        CardView showRestaurantListButton = findViewById(R.id.showMRestaurantListButton);
+        showRestaurantListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(view.getContext(), AllRestaurantsActivity.class);
+                view.getContext().startActivity(intent);
+            }
+        });
 
         CardView showMyReservations = findViewById(R.id.show_my_reservations);
         showMyReservations.setOnClickListener(new View.OnClickListener() {
