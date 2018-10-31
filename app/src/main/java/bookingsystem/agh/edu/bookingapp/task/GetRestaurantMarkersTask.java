@@ -65,7 +65,7 @@ public class GetRestaurantMarkersTask  extends AsyncTask<Void, Void, List<Restau
             marker.setTag(tag);
         }
         if(problemWithNet)
-            Toast.makeText(mContext, "problem with net", Toast.LENGTH_SHORT);
+            Toast.makeText(mContext, "problem with net", Toast.LENGTH_SHORT).show();
     }
 
 

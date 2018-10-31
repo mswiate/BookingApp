@@ -8,6 +8,14 @@
     tools:context=".activity.AllRestaurantsActivity">
 
 
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/all_restaurants_listview">
+
+    </ListView>
+
+
     <Button
         android:id="@+id/all_restaurants_filters"
         android:layout_height="wrap_content"
