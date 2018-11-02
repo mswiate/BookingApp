@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.shawnlin.numberpicker.NumberPicker;
 
+import java.sql.Struct;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -38,7 +39,9 @@ public class ReservationActivity extends ActivityWithMenu {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.restaurantId = this.getIntent().getIntExtra("restaurantId", -1);
+        String restaurantName = this.getIntent().getStringExtra("restaurantName");
         setContentView(R.layout.activity_reservation);
+        this.setRestaurantName(restaurantName);
         this.submitButton = findViewById(R.id.info_window_submit_button);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -72,6 +75,11 @@ public class ReservationActivity extends ActivityWithMenu {
         });
 
         prepareNavigationMenu(R.id.reservationDrawerLayout, R.id.reservation_nav_view, getApplicationContext());
+    }
+
+    private void setRestaurantName(String restaurantName) {
+        TextView restaurantNameTextView = findViewById(R.id.info_window_restaurant_name);
+        restaurantNameTextView.setText(restaurantName);
     }
 
     @Override

@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -99,7 +98,9 @@ public class MapsActivity extends ActivityWithMenu implements OnMapReadyCallback
             public void onInfoWindowClick(Marker marker) {
                 Intent intent = new Intent(MapsActivity.this, ReservationActivity.class);
                 int restaurantId = ((RestaurantWindowInfoData) marker.getTag()).getRestaurantId();
+                String restaurantName = ((RestaurantWindowInfoData) marker.getTag()).getRestaurantName();
                 intent.putExtra("restaurantId", restaurantId);
+                intent.putExtra("restaurantName", restaurantName);
                 startActivity(intent);
             }
         });

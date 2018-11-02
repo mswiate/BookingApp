@@ -1,18 +1,22 @@
 package bookingsystem.agh.edu.bookingapp.dto;
 
+import android.support.annotation.NonNull;
+
 public class RestaurantWindowInfoData {
 
     private int restaurantId;
+    private String restaurantName;
 
-    public RestaurantWindowInfoData(int restaurantId) {
+    public RestaurantWindowInfoData(int restaurantId, @NonNull String restaurantName) {
         this.restaurantId = restaurantId;
+        this.restaurantName = restaurantName;
     }
 
     public int getRestaurantId() {
         return restaurantId;
     }
 
-    public void setRestaurantId(int restaurantId) {
-        this.restaurantId = restaurantId;
+    public String getRestaurantName() {
+        return restaurantName;
     }
 }

@@ -30,7 +30,7 @@ public class RestaurantInfoWindowGoogleMap implements GoogleMap.InfoWindowAdapte
                 .inflate(R.layout.marker_restaurant_info, null);
         TextView restaurantNameTextView = view.findViewById(R.id.info_window_restaurant_name);
         RestaurantWindowInfoData restaurantWindowInfoData = (RestaurantWindowInfoData) marker.getTag();
-        restaurantNameTextView.setText(Integer.toString(restaurantWindowInfoData.getRestaurantId()));
+        restaurantNameTextView.setText(restaurantWindowInfoData.getRestaurantName());
         return view;
     }
 }

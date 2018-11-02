@@ -56,7 +56,7 @@ public class GetRestaurantMarkersTask  extends AsyncTask<Void, Void, List<Restau
     @Override
     protected void onPostExecute(List<Restaurant> restaurants) {
         for (Restaurant restaurant: restaurants) {
-            RestaurantWindowInfoData tag = new RestaurantWindowInfoData(restaurant.getId());
+            RestaurantWindowInfoData tag = new RestaurantWindowInfoData(restaurant.getId(), restaurant.getName());
             Marker marker = googleMap.addMarker(
                     new MarkerOptions().position(new LatLng(
                             restaurant.getLatitude(),

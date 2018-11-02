@@ -28,7 +28,7 @@ public class ApiRestaurantListConnection {
     public List<Restaurant> getRestaurants(LatLng location, double radius, List<String> tags) throws IOException {
         try {
 
-            String endpoint = buildRequest(ApiEndpoints.GET_RESTAURANT_LIST, location, radius, tags);
+            String endpoint = buildRequest(ApiEndpoints.GET_RESTAURANTS_LIST, location, radius, tags);
 
             Pair<Integer, JSONObject> res = new ApiConnection(mContext)
                     .authGet(endpoint, null);
