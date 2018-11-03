@@ -1,9 +1,14 @@
 package bookingsystem.agh.edu.bookingapp.controls;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.util.Pair;
 import android.view.KeyEvent;
@@ -16,7 +21,9 @@ import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.xw.repo.BubbleSeekBar;
 
 import java.util.ArrayList;
@@ -26,10 +33,12 @@ import bookingsystem.agh.edu.bookingapp.R;
 import bookingsystem.agh.edu.bookingapp.task.GetRestaurantTagsTask;
 import bookingsystem.agh.edu.bookingapp.task.GetRestaurantsTask;
 
-public class FiltersView extends LinearLayout{
+import static android.content.Context.LOCATION_SERVICE;
 
-    private ArrayList<String> userTags = new ArrayList<>();
-    private ArrayList<String> userPrices = new ArrayList<>();
+public class FiltersView extends LinearLayout {
+
+    private List<String> userTags = new ArrayList<>();
+    private List<String> userPrices = new ArrayList<>();
     private TextView tagsTextView;
     private Context mContext;
     private TextView pricesTextView;
@@ -37,11 +46,12 @@ public class FiltersView extends LinearLayout{
     private CheckBox localization;
     private BubbleSeekBar radius;
     private Button applyFilters;
+    private LatLng mLocation;
 
     public FiltersView(Context context, final BottomSheetDialog dialog, GetRestaurantsTask.Builder restaurantTaskBuilder) {
         super(context);
         mContext = context;
-        final LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        final LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         final View thisView = inflater.inflate(R.layout.filters_view, this);
 
         new GetRestaurantTagsTask(mContext, new GetRestaurantTagsTask.GetRestaurantTagsCallback() {
@@ -60,7 +70,7 @@ public class FiltersView extends LinearLayout{
             @Override
             public boolean onEditorAction(TextView v, int id, KeyEvent keyEvent) {
                 if (id == EditorInfo.IME_ACTION_DONE || id == EditorInfo.IME_NULL) {
-                    InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
                     return true;
                 }
@@ -72,12 +82,35 @@ public class FiltersView extends LinearLayout{
         radius = findViewById(R.id.radius);
         applyFilters = findViewById(R.id.btnGetMoreResults);
         applyFilters.setOnClickListener(new ApplyFiltersListener(dialog, restaurantTaskBuilder));
-//        applyFilters.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dialog.cancel();
-//            }
-//        });
+
+        accessCurrentLocation();
+
+    }
+
+    private void accessCurrentLocation() {
+        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+
+        LocationManager locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
+        Location location;
+
+        if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+            location = locationManager.getLastKnownLocation( LocationManager.GPS_PROVIDER);
+            if(location != null) {
+                mLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                return;
+            }
+        }
+        if (locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)){
+            location = locationManager.getLastKnownLocation( LocationManager.NETWORK_PROVIDER);
+            if(location != null) {
+                mLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                return;
+            }
+        }
+        Toast.makeText(mContext, "no location available", Toast.LENGTH_LONG);
     }
 
     private void setTagButtonOnClickListener(String[] restaurantTags){
@@ -210,6 +243,17 @@ public class FiltersView extends LinearLayout{
 
         @Override
         public void onClick(View v) {
+            restaurantTaskBuilder.tags(userTags);
+            restaurantTaskBuilder.prices(userPrices);
+            String name = restaurantName.getText().toString();
+            if(name != null && !name.isEmpty()) {
+                restaurantTaskBuilder.name(name);
+            }
+            if(localization.isChecked() && mLocation != null) {
+                restaurantTaskBuilder.location(mLocation, radius.getProgressFloat());
+            }
+            if(mLocation == null)
+                Toast.makeText(mContext, "no location available", Toast.LENGTH_LONG);
             restaurantTaskBuilder.build().execute();
             dialog.cancel();
         }

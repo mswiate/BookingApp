@@ -31,6 +31,7 @@ public class ApiRestaurantList {
 
             String endpoint = buildRequest(location, radius, tags, prices, restaurantName);
 
+            Log.i("Current request: ", endpoint);
             Pair<Integer, Object> res = new ApiConnection(mContext)
                     .authGet(endpoint, null);
             if(res == null)
