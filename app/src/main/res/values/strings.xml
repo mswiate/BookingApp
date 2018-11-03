@@ -24,4 +24,5 @@
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="reservationActivityName">Reservation</string>
     <string name="type_name">type name...</string>
+    <string name="all_restaurants_title">Find Restaurant</string>
 </resources>
