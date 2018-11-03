@@ -1,9 +1,10 @@
 package bookingsystem.agh.edu.bookingapp.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -50,9 +51,23 @@ public class AllRestaurantsActivity extends ActivityWithMenu {
                 .build()
                 .execute();
 
+        listView.setOnItemClickListener(new RestaurantsListener());
+
         prepareNavigationMenu(R.id.restaurantsDrawerLayout, R.id.restaruants_nav_view, this);
     }
 
 
+    private class RestaurantsListener implements android.widget.AdapterView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Restaurant selectedRestaurant = (Restaurant) parent.getItemAtPosition(position);
 
+            Intent intent = new Intent(AllRestaurantsActivity.this, ReservationActivity.class);
+            int restaurantId = selectedRestaurant.getId();
+            String restaurantName = selectedRestaurant.getName();
+            intent.putExtra("restaurantId", restaurantId);
+            intent.putExtra("restaurantName", restaurantName);
+            startActivity(intent);
+        }
+    }
 }

@@ -29,7 +29,7 @@ public class AllRestaurantsAdapter extends BaseAdapter {
 
     @Override
     public Object getItem(int position) {
-        return null;
+        return restaurantList.get(position);
     }
 
     @Override
