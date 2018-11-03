@@ -11,6 +11,7 @@ import android.widget.ListView;
 import java.util.List;
 
 import bookingsystem.agh.edu.bookingapp.R;
+import bookingsystem.agh.edu.bookingapp.activity.tools.ActivityAuthenticator;
 import bookingsystem.agh.edu.bookingapp.activity.tools.ActivityWithMenu;
 import bookingsystem.agh.edu.bookingapp.adapter.AllRestaurantsAdapter;
 import bookingsystem.agh.edu.bookingapp.controls.FiltersView;
@@ -54,6 +55,12 @@ public class AllRestaurantsActivity extends ActivityWithMenu {
         listView.setOnItemClickListener(new RestaurantsListener());
 
         prepareNavigationMenu(R.id.restaurantsDrawerLayout, R.id.restaruants_nav_view, this);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        new ActivityAuthenticator(getApplicationContext()).execute();
     }
 
 
