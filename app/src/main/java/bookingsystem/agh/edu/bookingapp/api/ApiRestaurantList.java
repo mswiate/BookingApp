@@ -26,10 +26,10 @@ public class ApiRestaurantList {
     }
 
     public List<Restaurant> getRestaurants(LatLng location, double radius, List<String> tags,
-                                           String price, String restaurantName) throws IOException {
+                                           List<String> prices, String restaurantName) throws IOException {
         try {
 
-            String endpoint = buildRequest(location, radius, tags, price, restaurantName);
+            String endpoint = buildRequest(location, radius, tags, prices, restaurantName);
 
             Pair<Integer, JSONObject> res = new ApiConnection(mContext)
                     .authGet(endpoint, null);
@@ -53,19 +53,36 @@ public class ApiRestaurantList {
     }
 
     private String buildRequest(LatLng location, double radius, List<String> tags,
-                                String price, String restaurantName)  {
+                                List<String> prices, String restaurantName)  {
 
-        String request = ApiEndpoints.GET_RESTAURANTS_LIST + "?" +
-                "lat=" + location.latitude +
-                "&lon=" + location.longitude +
-                "&radius=" + new Double(radius).intValue() +
-                "&price=" + price +
-                "&name=" + restaurantName;
-        if(tags == null)
-            return request;
-        for (String tag: tags) {
-            request += "&tags=" + tag;
+        String request = ApiEndpoints.GET_RESTAURANTS_LIST;
+
+        String separator = "?";
+
+        if(location !=null) {
+            request += separator +  "lat=" + location.latitude;
+            separator = "&";
+            request += "&lon=" + location.longitude;
+            request += "&radius=" + new Double(radius).intValue();
         }
+        if(restaurantName != null) {
+            request += separator + "name=" + restaurantName;
+            separator = "&";
+        }
+
+        if(tags != null) {
+            for (String tag : tags) {
+                request += separator + "tags=" + tag;
+                separator = "&";
+            }
+        }
+        if(prices != null) {
+            for (String price : prices) {
+                request += separator + "price=" + price;
+                separator = "&";
+            }
+        }
+
         return request;
     }
 

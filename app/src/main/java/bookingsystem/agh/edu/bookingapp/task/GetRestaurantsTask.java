@@ -10,26 +10,25 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import bookingsystem.agh.edu.bookingapp.activity.AllRestaurantsActivity;
 import bookingsystem.agh.edu.bookingapp.api.ApiRestaurantList;
 import bookingsystem.agh.edu.bookingapp.model.Restaurant;
 
 public class GetRestaurantsTask extends AsyncTask<Void, Void, List<Restaurant>> {
 
+    private LatLng location;
+    private double radius;
+    private List<String> tags;
+    private List<String> prices;
+    private String name;
     private Context mContext;
-    private AllRestaurantsActivity.GetRestaurantsCallback callback;
+    private GetRestaurantsCallback callback;
     private boolean problemWithNet;
-
-    public GetRestaurantsTask(Context mContext, AllRestaurantsActivity.GetRestaurantsCallback callback) {
-        this.mContext = mContext;
-        this.callback = callback;
-    }
 
     @Override
     protected List<Restaurant> doInBackground(Void... voids) {
         try {
             return new ApiRestaurantList(mContext)
-                    .getRestaurants(new LatLng(30, 30), 100, new ArrayList<String>(), "HIGH", "name");
+                    .getRestaurants(location, radius, tags, prices, name);
         } catch (IOException e) {
             problemWithNet = true;
             return new ArrayList<>();
@@ -43,6 +42,66 @@ public class GetRestaurantsTask extends AsyncTask<Void, Void, List<Restaurant>> 
             return;
         }
         callback.onRequestDone(restaurants);
+    }
+
+    public static class Builder {
+
+        private LatLng location;
+        private double radius;
+        private List<String> tags;
+        private List<String> prices;
+        private String name;
+        private Context context;
+        private GetRestaurantsCallback callback;
+
+        public Builder location(LatLng location, double radius) {
+            this.location = location;
+            this.radius = radius;
+            return this;
+        }
+
+        public Builder tags(List<String> tags) {
+            this.tags = tags;
+            return this;
+        }
+
+        public Builder prices(List<String> prices) {
+            this.prices = prices;
+            return this;
+        }
+
+        public Builder name(String name) {
+            this.name = name;
+            return this;
+        }
+
+        public Builder context(Context context) {
+            this.context = context;
+            return this;
+        }
+
+        public Builder callback(GetRestaurantsCallback callback) {
+            this.callback = callback;
+            return this;
+        }
+
+        public GetRestaurantsTask build() {
+            return new GetRestaurantsTask(this);
+        }
+    }
+
+    private GetRestaurantsTask(Builder builder) {
+        this.location = builder.location;
+        this.radius = builder.radius;
+        this.tags = builder.tags;
+        this.prices = builder.prices;
+        this.name = builder.name;
+        this.mContext = builder.context;
+        this.callback = builder.callback;
+    }
+
+    public interface GetRestaurantsCallback{
+        void onRequestDone(List<Restaurant> restaurantList);
     }
 
 }

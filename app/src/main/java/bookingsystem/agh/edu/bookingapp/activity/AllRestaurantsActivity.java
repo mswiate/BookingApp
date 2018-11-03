@@ -37,18 +37,19 @@ public class AllRestaurantsActivity extends AppCompatActivity {
             }
         });
 
-        new GetRestaurantsTask(this, new GetRestaurantsCallback() {
-            @Override
-            public void onRequestDone(List<Restaurant> restaurantList) {
-                AllRestaurantsAdapter adapter = new AllRestaurantsAdapter(AllRestaurantsActivity.this, restaurantList);
-                AllRestaurantsActivity.this.listView.setAdapter(adapter);
-            }
-        });
-
+        new GetRestaurantsTask.Builder()
+                .callback(new GetRestaurantsTask.GetRestaurantsCallback() {
+                    @Override
+                    public void onRequestDone(List<Restaurant> restaurantList) {
+                        AllRestaurantsAdapter adapter = new AllRestaurantsAdapter(AllRestaurantsActivity.this, restaurantList);
+                        AllRestaurantsActivity.this.listView.setAdapter(adapter);
+                    }
+                })
+                .context(this)
+                .build()
+                .execute();
     }
 
-    public interface GetRestaurantsCallback{
-        void onRequestDone(List<Restaurant> restaurantList);
-    }
+
 
 }
