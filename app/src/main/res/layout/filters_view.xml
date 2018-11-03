@@ -31,7 +31,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
                 android:textColor="#939393"
-                android:text="Restaurant Name" />
+                android:hint="@string/type_name"
+                android:imeOptions="actionDone" />
 
         </LinearLayout>
         <View
@@ -105,15 +106,17 @@
                 android:width="120dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Localization" />
+                android:text="Localization"
+                android:id="@+id/localization"/>
             <com.xw.repo.BubbleSeekBar
+                android:id="@+id/radius"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:bsb_bubble_color="#ffb2b2"
                 app:bsb_bubble_text_color="@color/colorPrimaryDark"
-                app:bsb_max="1000"
+                app:bsb_max="2000"
                 app:bsb_min="100"
-                app:bsb_progress="500"
+                app:bsb_progress="1000"
                 app:bsb_second_track_color="#ff0000"
                 app:bsb_section_count="5"
                 app:bsb_section_text_position="bottom_sides"

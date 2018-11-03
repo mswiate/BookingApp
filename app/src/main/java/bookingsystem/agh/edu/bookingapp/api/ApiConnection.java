@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,24 +37,24 @@ public class ApiConnection {
         this.mContext = mContext;
     }
 
-    public Pair<Integer, JSONObject> get(String endpoint, JSONObject body, Pair<String, String>... headers) throws IOException {
+    public Pair<Integer, Object> get(String endpoint, JSONObject body, Pair<String, String>... headers) throws IOException {
         return doRequest("GET", endpoint, body, packHeaders(headers));
     }
 
 
-    public Pair<Integer, JSONObject> authGet(String endpoint, JSONObject body, Pair<String, String>... headers) throws IOException {
+    public Pair<Integer, Object> authGet(String endpoint, JSONObject body, Pair<String, String>... headers) throws IOException {
         return doAuthRequest("GET", endpoint, body, packHeaders(headers));
     }
 
-    public Pair<Integer, JSONObject> post(String endpoint, JSONObject body, Pair<String, String>... headers) throws IOException {
+    public Pair<Integer, Object> post(String endpoint, JSONObject body, Pair<String, String>... headers) throws IOException {
         return doRequest("POST", endpoint, body, packHeaders(headers));
     }
 
-    public Pair<Integer, JSONObject> authPost(String endpoint, JSONObject body, Pair<String, String>... headers) throws IOException {
+    public Pair<Integer, Object> authPost(String endpoint, JSONObject body, Pair<String, String>... headers) throws IOException {
         return doAuthRequest("POST", endpoint, body, packHeaders(headers));
     }
 
-    private Pair<Integer, JSONObject> doAuthRequest(String method, String endpoint, JSONObject body, List<Pair<String, String>> headers) throws IOException {
+    private Pair<Integer, Object> doAuthRequest(String method, String endpoint, JSONObject body, List<Pair<String, String>> headers) throws IOException {
         AccountManager am = AccountManager.get(mContext);
         Account[] accounts = am.getAccountsByType(mContext.getString(R.string.account_type));
         Account account = accounts[0];
@@ -68,26 +69,31 @@ public class ApiConnection {
         return doRequest(method, endpoint, body, headers);
     }
 
-    private Pair<Integer, JSONObject> doRequest(String method, String endpoint, JSONObject body, List<Pair<String, String>> headers) throws IOException {
+    private Pair<Integer, Object> doRequest(String method, String endpoint, JSONObject body, List<Pair<String, String>> headers) throws IOException {
         HttpsURLConnection conn = openJSONConnection(endpoint, headers);
         conn.setRequestMethod(method);
         if(body != null) {
             conn.setDoOutput(true);
             conn.getOutputStream().write(body.toString().getBytes());
         }
-        JSONObject res = getResponseBody(conn.getResponseCode() >= 400? conn.getErrorStream(): conn.getInputStream());
+        Object res = getResponseBody(conn.getResponseCode() >= 400? conn.getErrorStream(): conn.getInputStream());
         return new Pair<>(conn.getResponseCode(), res);
     }
 
-    private JSONObject getResponseBody(InputStream stream) throws IOException {
+    private Object getResponseBody(InputStream stream) throws IOException {
         String json = "";
         try(BufferedReader r = new BufferedReader(new InputStreamReader(stream, "UTF-8"))) {
             for(String line; (line = r.readLine()) != null;)
                 json += line;
         }
         try {
+        if(json.startsWith("{")){
             return new JSONObject(json);
+        } else {
+            return new JSONArray(json);
+        }
         } catch (JSONException e) {
+            Log.e("ApiCOnnction", "getResponseBody: not a json", e);
             return null;
         }
     }

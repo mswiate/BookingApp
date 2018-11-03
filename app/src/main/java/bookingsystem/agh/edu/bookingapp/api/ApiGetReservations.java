@@ -25,7 +25,7 @@ public class ApiGetReservations {
         try {
 
             String url = ApiEndpoints.GET_RESERVATIONS;
-            Pair<Integer, JSONObject> res = new ApiConnection(mContext).authGet(url, null);
+            Pair<Integer, Object> res = new ApiConnection(mContext).authGet(url, null);
 
             if(res == null)
                 return null;
@@ -33,7 +33,7 @@ public class ApiGetReservations {
             if(res.first != 200)
                 return null;
 
-            return DoneReservation.of(res.second);
+            return DoneReservation.of((JSONObject) res.second);
         } catch (IOException | ParseException |  JSONException e) {
             e.printStackTrace();
             return null;

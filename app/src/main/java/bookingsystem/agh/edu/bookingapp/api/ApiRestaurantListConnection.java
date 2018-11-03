@@ -30,14 +30,14 @@ public class ApiRestaurantListConnection {
 
             String endpoint = buildRequest(ApiEndpoints.GET_RESTAURANTS_LIST, location, radius, tags);
 
-            Pair<Integer, JSONObject> res = new ApiConnection(mContext)
+            Pair<Integer, Object> res = new ApiConnection(mContext)
                     .authGet(endpoint, null);
             if(res == null)
                 return null;
 
             if(res.first != 200)
                 return null;
-            JSONArray rl = res.second.getJSONArray("restaurants");
+            JSONArray rl = ((JSONObject) res.second).getJSONArray("restaurants");
 
             List<Restaurant> restaurants = new ArrayList<>();
             for(int i = 0; i < rl.length(); i++) {

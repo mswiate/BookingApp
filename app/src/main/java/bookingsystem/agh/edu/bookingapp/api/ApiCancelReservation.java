@@ -22,7 +22,7 @@ public class ApiCancelReservation {
         try {
 
             String url = ApiEndpoints.DELETE_RESERVATION.replace("{id}", reservationId.toString());
-            Pair<Integer, JSONObject> res = new ApiConnection(mContext).authPost(url, null);
+            Pair<Integer, Object> res = new ApiConnection(mContext).authPost(url, null);
 
             if(res == null)
                 return false;

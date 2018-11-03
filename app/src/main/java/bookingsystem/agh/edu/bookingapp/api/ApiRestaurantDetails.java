@@ -28,7 +28,7 @@ public class ApiRestaurantDetails {
             String url = ApiEndpoints.GET_RESTAURANT_DETAILS
                     .replace("{id}", restaurantId.toString());
 
-            Pair<Integer, JSONObject> res = new ApiConnection(mContext)
+            Pair<Integer, Object> res = new ApiConnection(mContext)
                     .authGet(url, null);
             if(res == null)
                 return null;
@@ -36,7 +36,7 @@ public class ApiRestaurantDetails {
             if(res.first != 200)
                 return null;
 
-            return Restaurant.of(res.second);
+            return Restaurant.of((JSONObject) res.second);
         } catch (JSONException e) {
             Log.e("ApiRestaurantConnection", "problem with json parsing", e);
             return null;

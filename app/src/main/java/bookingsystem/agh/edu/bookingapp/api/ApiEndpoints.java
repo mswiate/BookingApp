@@ -11,4 +11,6 @@ public class ApiEndpoints {
     public static final String POST_RESERVATION = "https://restaurant-booking-app.herokuapp.com/api/client/restaurant{id}/reservation/add/";
     public static final String DELETE_RESERVATION = "https://restaurant-booking-app.herokuapp.com/api/client/reservation{id}/cancel";
     public static final String VALIDATE = "https://restaurant-booking-app.herokuapp.com/api/client/validate";
+    public static final String TAGS = "https://restaurant-booking-app.herokuapp.com/api/tags";
+    public static final String PRICES = "https://restaurant-booking-app.herokuapp.com/api/prices";
 }

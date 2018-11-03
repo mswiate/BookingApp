@@ -54,6 +54,11 @@ public class GetRestaurantsTask extends AsyncTask<Void, Void, List<Restaurant>> 
         private Context context;
         private GetRestaurantsCallback callback;
 
+        public Builder(Context context, GetRestaurantsCallback callback) {
+            this.context = context;
+            this.callback = callback;
+        }
+
         public Builder location(LatLng location, double radius) {
             this.location = location;
             this.radius = radius;
@@ -72,16 +77,6 @@ public class GetRestaurantsTask extends AsyncTask<Void, Void, List<Restaurant>> 
 
         public Builder name(String name) {
             this.name = name;
-            return this;
-        }
-
-        public Builder context(Context context) {
-            this.context = context;
-            return this;
-        }
-
-        public Builder callback(GetRestaurantsCallback callback) {
-            this.callback = callback;
             return this;
         }
 

@@ -42,7 +42,7 @@ public class ApiBookHour {
                     .put("comment", "");
 
             String url = ApiEndpoints.POST_RESERVATION.replace("{id}", restaurantId.toString());
-            Pair<Integer, JSONObject> res = new ApiConnection(mContext).authPost(url, body);
+            Pair<Integer, Object> res = new ApiConnection(mContext).authPost(url, body);
 
             if(res == null)
                 return false;

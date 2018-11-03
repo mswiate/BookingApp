@@ -19,10 +19,10 @@ public class ApiValidate {
 
     public boolean validate() throws IOException {
         try {
-            Pair<Integer, JSONObject> res = new ApiConnection(mContext).authGet(ApiEndpoints.VALIDATE, null);
+            Pair<Integer, Object> res = new ApiConnection(mContext).authGet(ApiEndpoints.VALIDATE, null);
 
             if(res.first == 200)
-                return "Correct validation".equalsIgnoreCase(res.second.getString("desc"));
+                return "Correct validation".equalsIgnoreCase(((JSONObject)res.second).getString("desc"));
 
         } catch (JSONException e) {
             Log.e("ApiValidate", "problem with json", e);

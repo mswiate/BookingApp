@@ -34,27 +34,27 @@ public class AllRestaurantsActivity extends ActivityWithMenu {
             @Override
             public void onClick(View v) {
                 BottomSheetDialog dialog = new BottomSheetDialog(AllRestaurantsActivity.this);
-                dialog.setContentView(new FiltersView(AllRestaurantsActivity.this));
+                dialog.setContentView(new FiltersView(AllRestaurantsActivity.this, dialog, createRestaurantTaskBuilder()));
                 dialog.show();
-
             }
         });
 
-        new GetRestaurantsTask.Builder()
-                .callback(new GetRestaurantsTask.GetRestaurantsCallback() {
-                    @Override
-                    public void onRequestDone(List<Restaurant> restaurantList) {
-                        AllRestaurantsAdapter adapter = new AllRestaurantsAdapter(AllRestaurantsActivity.this, restaurantList);
-                        AllRestaurantsActivity.this.listView.setAdapter(adapter);
-                    }
-                })
-                .context(this)
-                .build()
-                .execute();
+        createRestaurantTaskBuilder().build().execute();
 
         listView.setOnItemClickListener(new RestaurantsListener());
 
         prepareNavigationMenu(R.id.restaurantsDrawerLayout, R.id.restaruants_nav_view, this);
+    }
+
+    private GetRestaurantsTask.Builder createRestaurantTaskBuilder() {
+        return new GetRestaurantsTask.Builder(this,
+            new GetRestaurantsTask.GetRestaurantsCallback() {
+                @Override
+                public void onRequestDone(List<Restaurant> restaurantList) {
+                    AllRestaurantsAdapter adapter = new AllRestaurantsAdapter(AllRestaurantsActivity.this, restaurantList);
+                    AllRestaurantsActivity.this.listView.setAdapter(adapter);
+                }
+            });
     }
 
     @Override

@@ -46,16 +46,16 @@ public class ApiProposalHours {
                     .replace("{length}", length.toString())
                     .replace("{places}", places.toString());
 
-            Pair<Integer, JSONObject> res = new ApiConnection(mContext)
+            Pair<Integer, Object> res = new ApiConnection(mContext)
                     .authGet(url, null);
             if(res == null)
                 return null;
 
             if(res.first != 200)
                 return null;
-            JSONArray rl = res.second.getJSONArray("proposalHours");
+            JSONArray rl = ((JSONObject) res.second).getJSONArray("proposalHours");
 
-            return BookTime.of(res.second);
+            return BookTime.of((JSONObject) res.second);
         } catch (JSONException e) {
             Log.e("ApiRestaurantConnection", "problem with json parsing", e);
             return null;

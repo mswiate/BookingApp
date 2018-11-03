@@ -25,10 +25,10 @@ public class ApiAuthConnection {
             JSONObject auth = new JSONObject()
                         .put("username", username)
                         .put("password", password);
-            Pair<Integer, JSONObject> res = new ApiConnection(mContext).post(ApiEndpoints.GET_TOKEN, auth);
+            Pair<Integer, Object> res = new ApiConnection(mContext).post(ApiEndpoints.GET_TOKEN, auth);
 
             if(res.first == 200)
-                return res.second.getString("token");
+                return ((JSONObject) res.second).getString("token");
 
         } catch (JSONException e) {
             Log.e("getToken", "problem with json", e);
@@ -42,7 +42,7 @@ public class ApiAuthConnection {
             JSONObject auth = new JSONObject()
                     .put("username", username)
                     .put("password", password);
-            Pair<Integer, JSONObject> res = new ApiConnection(mContext).post(ApiEndpoints.REGISTER_USER, auth);
+            Pair<Integer, Object> res = new ApiConnection(mContext).post(ApiEndpoints.REGISTER_USER, auth);
             return res.first == 204;
         } catch (JSONException e) {
             Log.e("register", "problem with json", e);
