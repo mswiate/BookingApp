@@ -33,11 +33,18 @@
 
             <TextView
                 android:id="@+id/info_window_restaurant_name"
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingLeft="20dp"
+                android:paddingRight="20dp"
                 android:textAppearance="@style/TextAppearance.AppCompat.Headline"
                 android:text="Name"
                 android:gravity="center" />
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/restaurant_details"
+                android:text="details"/>
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"

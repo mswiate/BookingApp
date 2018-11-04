@@ -2,7 +2,6 @@ package bookingsystem.agh.edu.bookingapp.activity;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -14,7 +13,6 @@ import android.widget.Toast;
 
 import com.shawnlin.numberpicker.NumberPicker;
 
-import java.sql.Struct;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -24,15 +22,19 @@ import java.util.Locale;
 import bookingsystem.agh.edu.bookingapp.R;
 import bookingsystem.agh.edu.bookingapp.activity.tools.ActivityAuthenticator;
 import bookingsystem.agh.edu.bookingapp.activity.tools.ActivityWithMenu;
+import bookingsystem.agh.edu.bookingapp.controls.RestaurantDetailsDialog;
 import bookingsystem.agh.edu.bookingapp.dto.ProposedHoursAskDto;
 import bookingsystem.agh.edu.bookingapp.exception.BadReservationRequestDataException;
+import bookingsystem.agh.edu.bookingapp.model.Restaurant;
 import bookingsystem.agh.edu.bookingapp.service.ReservationService;
+import bookingsystem.agh.edu.bookingapp.task.GetRestaurantDetailsTask;
 import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 
 public class ReservationActivity extends ActivityWithMenu {
 
     private int restaurantId;
     private CircularProgressButton submitButton;
+    private Button restaurantDetailsButton;
 
 
     @Override
@@ -43,6 +45,7 @@ public class ReservationActivity extends ActivityWithMenu {
         setContentView(R.layout.activity_reservation);
         this.setRestaurantName(restaurantName);
         this.submitButton = findViewById(R.id.info_window_submit_button);
+        this.restaurantDetailsButton = findViewById(R.id.restaurant_details);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         setDatePicker();
@@ -71,6 +74,22 @@ public class ReservationActivity extends ActivityWithMenu {
                     Toast.makeText(ReservationActivity.this, "Oops, some internal error occurred:" + e.getMessage(), Toast.LENGTH_SHORT).show();
                     submitButton.revertAnimation();
                 }
+            }
+        });
+
+        this.restaurantDetailsButton.setOnClickListener(new View.OnClickListener() {
+
+            GetRestaurantDetailsCallback callback = new GetRestaurantDetailsCallback() {
+                @Override
+                public void onRequestDone(Restaurant restaurant) {
+                    RestaurantDetailsDialog dialog = RestaurantDetailsDialog.newInstance(restaurant);
+                    dialog.show(ReservationActivity.this.getFragmentManager(), "restaurantdetails");
+                }
+            };
+
+            @Override
+            public void onClick(View v) {
+                 new GetRestaurantDetailsTask(ReservationActivity.this, callback).execute(restaurantId);
             }
         });
 
@@ -115,7 +134,13 @@ public class ReservationActivity extends ActivityWithMenu {
         String dateFormat = "yyyy-MM-dd";
         SimpleDateFormat sdf = new SimpleDateFormat(dateFormat, Locale.getDefault());
         Date parsedDate = sdf.parse(date);
-        if(parsedDate.getTime() < Calendar.getInstance().getTime().getTime()){
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        if(parsedDate.getTime() < cal.getTime().getTime()){
             throw new BadReservationRequestDataException("Invalid date value");
         }
     }
@@ -196,6 +221,10 @@ public class ReservationActivity extends ActivityWithMenu {
 
     public void stopSubmitButtonAnimation(){
         this.submitButton.revertAnimation();
+    }
+
+    public interface GetRestaurantDetailsCallback {
+        void onRequestDone(Restaurant restaurant);
     }
 
 }

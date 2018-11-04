@@ -52,6 +52,10 @@ public class ProposalHoursDialog extends DialogFragment {
     }
     private void setProposedHours(){
 
+        if(this.proposedHours.size() == 0){
+            setNoAvailableDates();
+        }
+
         for(int i = 0; i < this.proposedHours.size(); i++){
             BookTime bookTime = this.proposedHours.get(i);
             ProposedHourCardview proposedHourCardview = new ProposedHourCardview(this.getActivity().getApplicationContext(),
@@ -61,6 +65,12 @@ public class ProposalHoursDialog extends DialogFragment {
             this.proposedHoursLayout.addView(proposedHourCardview);
         }
 
+    }
+
+    private void setNoAvailableDates() {
+        NoAvailableDatesDialog dialog = new NoAvailableDatesDialog();
+        dialog.show(getFragmentManager(), "noavailabledates");
+        this.dismiss();
     }
 
 //    public void updateProposedHours(List<BookTime> proposedHours){
