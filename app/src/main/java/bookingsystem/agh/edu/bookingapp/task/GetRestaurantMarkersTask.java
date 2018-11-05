@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -21,6 +22,7 @@ import bookingsystem.agh.edu.bookingapp.api.ApiRestaurantListConnection;
 import bookingsystem.agh.edu.bookingapp.dto.RestaurantWindowInfoData;
 import bookingsystem.agh.edu.bookingapp.model.Restaurant;
 import bookingsystem.agh.edu.bookingapp.model.RestaurantMarker;
+import bookingsystem.agh.edu.bookingapp.util.MarkerDrawer;
 
 public class GetRestaurantMarkersTask  extends AsyncTask<Void, Void, List<Restaurant>> {
 
@@ -57,11 +59,7 @@ public class GetRestaurantMarkersTask  extends AsyncTask<Void, Void, List<Restau
     protected void onPostExecute(List<Restaurant> restaurants) {
         for (Restaurant restaurant: restaurants) {
             RestaurantWindowInfoData tag = new RestaurantWindowInfoData(restaurant.getId(), restaurant.getName());
-            Marker marker = googleMap.addMarker(
-                    new MarkerOptions().position(new LatLng(
-                            restaurant.getLatitude(),
-                            restaurant.getLongitude())));
-
+            Marker marker = googleMap.addMarker(MarkerDrawer.getMarker(restaurant));
             marker.setTag(tag);
         }
         if(problemWithNet)

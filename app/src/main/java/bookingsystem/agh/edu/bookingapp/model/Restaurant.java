@@ -18,6 +18,7 @@ public class Restaurant implements Serializable{
     private List<String> tags;
     private double latitude;
     private double longitude;
+    private double priority;
 
     public Restaurant() {
     }
@@ -35,10 +36,11 @@ public class Restaurant implements Serializable{
                 json.getString("phoneNumber"),
                 tags,
                 json.getDouble("latitude"),
-                json.getDouble("longitude"));
+                json.getDouble("longitude"),
+                json.getDouble("priority"));
     }
 
-    public Restaurant(int id, String name, String city, String street, String website, String phoneNumber, List<String> tags, double latitude, double longitude) {
+    public Restaurant(int id, String name, String city, String street, String website, String phoneNumber, List<String> tags, double latitude, double longitude, double priority) {
         this.id = id;
         this.name = name;
         this.city = city;
@@ -48,6 +50,7 @@ public class Restaurant implements Serializable{
         this.tags = tags;
         this.latitude = latitude;
         this.longitude = longitude;
+        this.priority = priority;
     }
 
     public int getId() {
@@ -116,5 +119,9 @@ public class Restaurant implements Serializable{
 
     public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    public double getPriority() {
+        return priority;
     }
 }
