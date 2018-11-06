@@ -44,6 +44,7 @@ public class GetMyReservationTask extends AsyncTask<Void, Void, List<DoneReserva
     protected void onPostExecute(final List<DoneReservation> doneReservations) {
         MyReservationsActivity activity = (MyReservationsActivity) mContext;
         LinearLayout linearLayout = activity.findViewById(R.id.my_reservation_layout);
+        linearLayout.removeAllViewsInLayout();
         MyReservationDrawer drawer = new MyReservationDrawer(mContext);
         for (int i = 0; i < doneReservations.size(); i++){
             final ReservationCardView reservationCardView = drawer.drawReservationCardView(doneReservations.get(i));
@@ -51,7 +52,7 @@ public class GetMyReservationTask extends AsyncTask<Void, Void, List<DoneReserva
             reservationCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ReservationDetailsDialog dialog = ReservationDetailsDialog.newInstance(doneReservations.get(finalI));
+                    ReservationDetailsDialog dialog = ReservationDetailsDialog.newInstance(doneReservations.get(finalI), mContext);
                     dialog.show(((MyReservationsActivity) mContext).getFragmentManager(), "reservationdetails");
                 }
             });

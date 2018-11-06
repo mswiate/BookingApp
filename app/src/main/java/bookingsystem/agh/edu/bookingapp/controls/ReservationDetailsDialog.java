@@ -3,6 +3,7 @@ package bookingsystem.agh.edu.bookingapp.controls;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import java.util.List;
 import bookingsystem.agh.edu.bookingapp.R;
 import bookingsystem.agh.edu.bookingapp.model.DoneReservation;
 import bookingsystem.agh.edu.bookingapp.task.DeleteReservationTask;
+import bookingsystem.agh.edu.bookingapp.task.GetMyReservationTask;
 import bookingsystem.agh.edu.bookingapp.util.Constants;
 import br.com.simplepass.loading_button_lib.customViews.CircularProgressButton;
 
@@ -25,13 +27,15 @@ public class ReservationDetailsDialog extends DialogFragment {
     private DoneReservation reservation;
     private CircularProgressButton cancelButton;
     private View dialog;
+    private Context activityContext;
 
 
-    public static ReservationDetailsDialog newInstance(DoneReservation reservation){
+    public static ReservationDetailsDialog newInstance(DoneReservation reservation, Context context){
         ReservationDetailsDialog dialog = new ReservationDetailsDialog();
         Bundle args = new Bundle();
         args.putSerializable("reservation", reservation);
         dialog.setArguments(args);
+        dialog.activityContext = context;
         return dialog;
     }
 
@@ -81,6 +85,7 @@ public class ReservationDetailsDialog extends DialogFragment {
                         ReservationDetailsDialog.this.reservation.getId(),
                         callback);
                 task.execute();
+                new GetMyReservationTask(getActivity()).execute();
             }
         });
     }
