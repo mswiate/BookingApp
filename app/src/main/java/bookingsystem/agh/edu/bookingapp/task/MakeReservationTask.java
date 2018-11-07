@@ -4,16 +4,16 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import bookingsystem.agh.edu.bookingapp.api.ApiBookHour;
-import bookingsystem.agh.edu.bookingapp.dto.ProposedHoursAskDto;
+import bookingsystem.agh.edu.bookingapp.dto.ProposedTimesAskDto;
 
 public class MakeReservationTask extends AsyncTask<Void, Void, Boolean> {
 
 
     private Context mContext;
-    private ProposedHoursAskDto proposedHoursAskDto;
+    private ProposedTimesAskDto proposedHoursAskDto;
     private String chosenTime;
 
-    public MakeReservationTask(Context context, ProposedHoursAskDto proposedHoursAskDto, String chosenTime) {
+    public MakeReservationTask(Context context, ProposedTimesAskDto proposedHoursAskDto, String chosenTime) {
         this.proposedHoursAskDto = proposedHoursAskDto;
         this.chosenTime = chosenTime;
         this.mContext = context;

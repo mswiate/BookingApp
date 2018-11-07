@@ -23,7 +23,7 @@ import bookingsystem.agh.edu.bookingapp.R;
 import bookingsystem.agh.edu.bookingapp.activity.tools.ActivityAuthenticator;
 import bookingsystem.agh.edu.bookingapp.activity.tools.ActivityWithMenu;
 import bookingsystem.agh.edu.bookingapp.controls.RestaurantDetailsDialog;
-import bookingsystem.agh.edu.bookingapp.dto.ProposedHoursAskDto;
+import bookingsystem.agh.edu.bookingapp.dto.ProposedTimesAskDto;
 import bookingsystem.agh.edu.bookingapp.exception.BadReservationRequestDataException;
 import bookingsystem.agh.edu.bookingapp.model.Restaurant;
 import bookingsystem.agh.edu.bookingapp.service.ReservationService;
@@ -62,7 +62,7 @@ public class ReservationActivity extends ActivityWithMenu {
 
                 try {
                     submitButton.startAnimation();
-                    final ProposedHoursAskDto proposedHoursAskDto = fetchDataFromActivity();
+                    final ProposedTimesAskDto proposedHoursAskDto = fetchDataFromActivity();
                     validateFormData(proposedHoursAskDto);
                     new ReservationService(proposedHoursAskDto,ReservationActivity.this).submit();
                 }
@@ -108,7 +108,7 @@ public class ReservationActivity extends ActivityWithMenu {
     }
 
 
-    private void validateFormData(ProposedHoursAskDto data) throws ParseException, BadReservationRequestDataException {
+    private void validateFormData(ProposedTimesAskDto data) throws ParseException, BadReservationRequestDataException {
         validateDate(data.getDate());
         validateTime(data.getFromTime(), data.getToTime());
         validateReservationLength(data.getLength());
@@ -145,13 +145,13 @@ public class ReservationActivity extends ActivityWithMenu {
         }
     }
 
-    private ProposedHoursAskDto fetchDataFromActivity() throws ParseException {
+    private ProposedTimesAskDto fetchDataFromActivity() throws ParseException {
         String date = ((TextView)findViewById(R.id.info_window_set_date_textview)).getText().toString();
         String fromTime = ((TextView)findViewById(R.id.info_window_set_from_time_textview)).getText().toString();
         String toTime = ((TextView)findViewById(R.id.info_window_set_to_time_textview)).getText().toString();
         Integer numberOfGuests = ((NumberPicker)findViewById(R.id.guest_number_picker)).getValue();
 
-        return new ProposedHoursAskDto(restaurantId, numberOfGuests, date, fromTime, toTime);
+        return new ProposedTimesAskDto(restaurantId, numberOfGuests, date, fromTime, toTime);
     }
 
     private void setTimePicker(Button button, final TextView textView) {

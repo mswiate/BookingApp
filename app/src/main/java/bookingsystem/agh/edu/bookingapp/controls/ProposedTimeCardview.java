@@ -14,24 +14,26 @@ import android.widget.Toast;
 import java.util.concurrent.ExecutionException;
 
 import bookingsystem.agh.edu.bookingapp.R;
-import bookingsystem.agh.edu.bookingapp.dto.ProposedHoursAskDto;
+import bookingsystem.agh.edu.bookingapp.dto.ProposedTimesAskDto;
 import bookingsystem.agh.edu.bookingapp.task.MakeReservationTask;
 
-public class ProposedHourCardview extends CardView {
+public class ProposedTimeCardview extends CardView {
 
     private TextView timeTextView;
     private TextView dateTextView;
     private Context mContext;
-    private ProposedHoursAskDto proposedHoursAskDto;
+    private ProposedTimesAskDto proposedHoursAskDto;
+    private ProposedTimesDialog parentDialog;
 
-    public ProposedHourCardview(@NonNull Context context, ProposedHoursAskDto proposedHoursAskDto) {
-        this(context, null, proposedHoursAskDto);
+    public ProposedTimeCardview(@NonNull Context context, ProposedTimesAskDto proposedHoursAskDto, ProposedTimesDialog parentDialog) {
+        this(context, null, proposedHoursAskDto, parentDialog);
     }
 
-    public ProposedHourCardview(@NonNull Context context, @Nullable AttributeSet attrs, ProposedHoursAskDto proposedHoursAskDto) {
+    public ProposedTimeCardview(@NonNull Context context, @Nullable AttributeSet attrs, ProposedTimesAskDto proposedHoursAskDto, ProposedTimesDialog parentDialog) {
         super(context, attrs);
         this.mContext = context;
         this.proposedHoursAskDto = proposedHoursAskDto;
+        this.parentDialog = parentDialog;
         LayoutInflater inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         inflater.inflate(R.layout.proposed_hour_cardview, this);
         this.timeTextView = this.findViewById(R.id.proposed_hour_card_time);
@@ -45,13 +47,15 @@ public class ProposedHourCardview extends CardView {
             @Override
             public void onClick(View v) {
                 try {
-                    Boolean isRequestSuccessful = new MakeReservationTask(ProposedHourCardview.this.mContext, proposedHoursAskDto,
-                            ProposedHourCardview.this.timeTextView.getText().toString()).execute().get();
+                    Boolean isRequestSuccessful = new MakeReservationTask(ProposedTimeCardview.this.mContext, proposedHoursAskDto,
+                            ProposedTimeCardview.this.timeTextView.getText().toString()).execute().get();
 
                     if(!isRequestSuccessful){
                         Toast.makeText(mContext, "Cannot book this date", Toast.LENGTH_SHORT).show();
                     }else {
-                        Toast.makeText(mContext, "Date has been successfully booked", Toast.LENGTH_SHORT).show();
+                        SuccessfullyBookedDialog dialog = new SuccessfullyBookedDialog();
+                        dialog.show(parentDialog.getActivity().getFragmentManager(), "succesful_reservation");
+
                     }
 
                 } catch (InterruptedException | ExecutionException e) {
@@ -61,8 +65,9 @@ public class ProposedHourCardview extends CardView {
         });
     }
 
-    public void setTime(String time) {
-        this.timeTextView.setText(time);
+
+    public void setTime(int hour, int minute) {
+        this.timeTextView.setText(String.format("%02d:%02d", hour, minute));
     }
 
     public void setDate(String date) {

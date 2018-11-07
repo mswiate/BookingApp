@@ -1,11 +1,12 @@
 package bookingsystem.agh.edu.bookingapp.dto;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class ProposedHoursAskDto {
+public class ProposedTimesAskDto implements Serializable{
     private int restaurantId;
     private int nubmerOfGuests;
     private String date;
@@ -13,7 +14,7 @@ public class ProposedHoursAskDto {
     private String toTime;
     private int length;
 
-    public ProposedHoursAskDto(int restaurantId, int nubmerOfGuests, String date, String fromTime, String toTime) throws ParseException {
+    public ProposedTimesAskDto(int restaurantId, int nubmerOfGuests, String date, String fromTime, String toTime) throws ParseException {
         this.restaurantId = restaurantId;
         this.nubmerOfGuests = nubmerOfGuests;
         this.date = date;

@@ -8,18 +8,18 @@ import java.util.List;
 
 import bookingsystem.agh.edu.bookingapp.activity.ReservationActivity;
 import bookingsystem.agh.edu.bookingapp.api.ApiProposalHours;
-import bookingsystem.agh.edu.bookingapp.controls.ProposalHoursDialog;
-import bookingsystem.agh.edu.bookingapp.dto.ProposedHoursAskDto;
+import bookingsystem.agh.edu.bookingapp.controls.ProposedTimesDialog;
+import bookingsystem.agh.edu.bookingapp.dto.ProposedTimesAskDto;
 import bookingsystem.agh.edu.bookingapp.model.BookTime;
 
 public class GetProposalBookingHoursTask extends AsyncTask<Void, Void, List<BookTime>> {
 
     private boolean problemWithNet = false;
-    private ProposedHoursAskDto proposedHoursAskDto;
+    private ProposedTimesAskDto proposedHoursAskDto;
     private Context mContext;
 
 
-    public GetProposalBookingHoursTask(ProposedHoursAskDto proposedHoursAskDto, Context mContext) {
+    public GetProposalBookingHoursTask(ProposedTimesAskDto proposedHoursAskDto, Context mContext) {
         this.proposedHoursAskDto = proposedHoursAskDto;
         this.mContext = mContext;
     }
@@ -41,7 +41,7 @@ public class GetProposalBookingHoursTask extends AsyncTask<Void, Void, List<Book
     @Override
     protected void onPostExecute(List<BookTime> bookTimes) {
         ReservationActivity parentActivity = (ReservationActivity) mContext;
-        ProposalHoursDialog proposalHoursDialog = new ProposalHoursDialog(bookTimes, proposedHoursAskDto);
+        ProposedTimesDialog proposalHoursDialog = ProposedTimesDialog.newInstance(bookTimes, proposedHoursAskDto);
         proposalHoursDialog.show(parentActivity.getFragmentManager(), "proposedhours");
         parentActivity.stopSubmitButtonAnimation();
     }

@@ -3,15 +3,15 @@ package bookingsystem.agh.edu.bookingapp.service;
 
 import android.content.Context;
 
-import bookingsystem.agh.edu.bookingapp.dto.ProposedHoursAskDto;
+import bookingsystem.agh.edu.bookingapp.dto.ProposedTimesAskDto;
 import bookingsystem.agh.edu.bookingapp.task.GetProposalBookingHoursTask;
 
 public class ReservationService {
 
-    private ProposedHoursAskDto proposedHoursAskDto;
+    private ProposedTimesAskDto proposedHoursAskDto;
     private Context mContext;
 
-    public ReservationService(ProposedHoursAskDto proposedHoursAskDto, Context mContext) {
+    public ReservationService(ProposedTimesAskDto proposedHoursAskDto, Context mContext) {
         this.proposedHoursAskDto = proposedHoursAskDto;
         this.mContext = mContext;
     }
