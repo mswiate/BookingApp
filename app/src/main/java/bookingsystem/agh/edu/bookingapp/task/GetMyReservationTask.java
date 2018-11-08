@@ -2,9 +2,12 @@ package bookingsystem.agh.edu.bookingapp.task;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import bookingsystem.agh.edu.bookingapp.R;
@@ -46,6 +49,8 @@ public class GetMyReservationTask extends AsyncTask<Void, Void, List<DoneReserva
         LinearLayout linearLayout = activity.findViewById(R.id.my_reservation_layout);
         linearLayout.removeAllViewsInLayout();
         MyReservationDrawer drawer = new MyReservationDrawer(mContext);
+        sortReservations(doneReservations);
+
         for (int i = 0; i < doneReservations.size(); i++){
             final ReservationCardView reservationCardView = drawer.drawReservationCardView(doneReservations.get(i));
             final int finalI = i;
@@ -58,5 +63,22 @@ public class GetMyReservationTask extends AsyncTask<Void, Void, List<DoneReserva
             });
             linearLayout.addView(reservationCardView);
         }
+    }
+
+    private void sortReservations(List<DoneReservation> doneReservations) {
+        Collections.sort(doneReservations, new Comparator<DoneReservation>() {
+            @Override
+            public int compare(DoneReservation o1, DoneReservation o2) {
+                return o2.getDateReservation().compareTo(o1.getDateReservation());
+            }
+        });
+        Collections.sort(doneReservations, new Comparator<DoneReservation>() {
+            @Override
+            public int compare(DoneReservation o1, DoneReservation o2) {
+                int val1 = o1.isReservationOutdated() && !o1.isCancelled()? 1: o1.isCancelled()? 2: 3;
+                int val2 = o2.isReservationOutdated() && !o2.isCancelled()? 1: o2.isCancelled()? 2: 3;
+                return val2 - val1;
+            }
+        });
     }
 }
