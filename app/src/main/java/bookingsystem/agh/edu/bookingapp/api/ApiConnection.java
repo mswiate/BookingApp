@@ -87,13 +87,15 @@ public class ApiConnection {
                 json += line;
         }
         try {
-        if(json.startsWith("{")){
-            return new JSONObject(json);
-        } else {
-            return new JSONArray(json);
-        }
+            if (json.startsWith("{")) {
+                return new JSONObject(json);
+            } else if (json.startsWith("[")) {
+                return new JSONArray(json);
+            } else {
+                return null;
+            }
         } catch (JSONException e) {
-            Log.e("ApiCOnnction", "getResponseBody: not a json", e);
+            Log.e("ApiConnection", "getResponseBody: not a json", e);
             return null;
         }
     }
