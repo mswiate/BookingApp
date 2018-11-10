@@ -36,9 +36,9 @@ public class ApiBookHour {
 
         try {
             JSONObject body = new JSONObject()
-                    .put("date", String.valueOf(date + "_" + time))
-                    .put("length", length.toString())
-                    .put("places", places.toString())
+                    .put("dateReservation", String.valueOf(date + "_" + time))
+                    .put("reservationLength", length.toString())
+                    .put("reservedPlaces", places.toString())
                     .put("comment", "");
 
             String url = ApiEndpoints.POST_RESERVATION.replace("{id}", restaurantId.toString());
