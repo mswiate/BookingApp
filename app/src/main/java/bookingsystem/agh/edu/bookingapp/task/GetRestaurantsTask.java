@@ -78,7 +78,6 @@ public class GetRestaurantsTask extends AsyncTask<Void, Void, List<Restaurant>> 
 
         public Builder name(String name) {
             this.name = name.replaceAll("\\s+", "%20");
-            Log.e("pies", "name: " + this.name);
             return this;
         }
 
