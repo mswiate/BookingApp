@@ -2,6 +2,7 @@ package bookingsystem.agh.edu.bookingapp.task;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -76,7 +77,8 @@ public class GetRestaurantsTask extends AsyncTask<Void, Void, List<Restaurant>> 
         }
 
         public Builder name(String name) {
-            this.name = name;
+            this.name = name.replaceAll("\\s+", "%20");
+            Log.e("pies", "name: " + this.name);
             return this;
         }
 
